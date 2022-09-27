@@ -1,0 +1,158 @@
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  // display: inline-block;
+  // text-align: center;
+  // vertical-align: middle;
+
+  font-family: $font-stack;
+  font-size: 14px;
+  color: $gray;
+  line-height: 1;
+  text-decoration: none;
+
+  border-radius: 46px;
+  border: 0;
+
+  cursor: pointer;
+  // transition: color, backgtound-color, border-color, box-shadow  0.5s linear;
+  transition: 0.2s linear;
+  transition-property: color, backgtound-color, border-color, box-shadow;
+
+  z-index: 2;
+
+  & svg {
+    margin-right: 7px;
+    transition: all 0.2s linear;
+  }
+
+  &:hover {
+    box-shadow: 0px 0px 30px rgba(68, 68, 68, 0.05);
+  }
+
+  &:focus {
+    outline: none;
+    border-color: $brown;
+  }
+
+  &:active {
+    box-shadow: 0px 0px 30px rgba(68, 68, 68, 0.35);
+  }
+
+  &--size_sm {
+    padding: 10px 15px;
+    height: 37px;
+    font-weight: 400;
+  }
+
+  &--size_md {
+    padding: 15px 44px;
+    height: 50px;
+    font-weight: 400;
+  }
+
+  &--w100 {
+    width: 100%;
+  }
+
+  &--font-spectral {
+    font-family: 'Spectral SC', serif;
+    text-transform: uppercase;
+  }
+
+  &--style_transp-gray,
+  &--style_transp-brown {
+    border: 1px solid $gray;
+    background: transparent;
+    position: relative;
+
+    &::before {
+      position: absolute;
+      content: '';
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: block;
+      border-radius: 46px;
+      background: $gradient-left-right-brown;
+      z-index: -1;
+      transition: opacity 0.2s linear;
+      opacity: 0;
+    }
+
+    & svg {
+      fill: $brown;
+    }
+
+    &:hover {
+      color: $font-color-light;
+
+      &::before {
+        opacity: 1;
+      }
+
+      & svg {
+        fill: $font-color-light;
+      }
+    }
+  }
+
+  &--style_transp-gray {
+    color: $gray;
+
+    & .counter {
+      position: absolute;
+      top: -7px;
+      right: 5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 17px;
+      height: 17px;
+      background-color: $green;
+      border-radius: 50%;
+      font-size: 10px;
+      z-index: 2;
+      color: rgba(94, 92, 90, 1);
+    }
+  }
+
+  &--style_transp-brown {
+    color: $brown;
+  }
+
+  &--style_brown {
+    border: 0;
+    background: $gradient-left-right-brown;
+    position: relative;
+    color: $font-color-light;
+    font-weight: 600;
+
+    &::before {
+      position: absolute;
+      content: '';
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: block;
+      border-radius: 46px;
+      background: $brown;
+      z-index: -1;
+      transition: opacity 0.2s linear;
+      opacity: 0;
+    }
+
+    & svg {
+      fill: $font-color-light;
+    }
+
+    &:hover {
+      &::before {
+        opacity: 1;
+      }
+    }
+  }
+}
