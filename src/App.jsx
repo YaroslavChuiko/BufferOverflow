@@ -1,33 +1,21 @@
 import { Card } from '@geist-ui/core';
 import { Route, Routes } from 'react-router-dom';
 import Home from './pages/Home/Home';
+import Login from './pages/Login/Login';
 import Header from './shared/Header/Header';
+import PageLayout from './shared/PageLayout/PageLayout';
 import './styles/index.scss';
-
 
 const App = () => {
   return (
     <>
-      {/* <section className="hero"></section>
-      <main>
-        <section>
-          <h1>Oh hai, React</h1>
-        </section>
-        <img src={sword} alt="sword" width={250}/>
-        <img src={swordSvg} alt="sword" width={250}/>
-        <SwordSvg className='sword' />
-        <Recipes />
-        <Whatever />
-      </main> */}
-
-      {/* <Card shadow width="100%" height='64px' /> */}
-      <Header/>
-
       <Routes>
-        <Route path="/" element={<Home />}>
-          {/* <Route path="dialog/:id" element={<DailyWeatherModal />} /> */}
+        <Route path="/login" element={<Login />} />
+        <Route element={<PageLayout />}>
+          <Route path="/" element={<Home />} />
+          <Route path="/profile" element={<div>profile</div>} />
+          <Route path="/questions" element={<div>questions</div>} />
         </Route>
-        <Route path="/profile" element={<div>profile</div>} />
       </Routes>
     </>
   );
