@@ -1,0 +1,71 @@
+.wrapper {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-image: radial-gradient(#e3e3e3 1px, transparent 0), radial-gradient(#e3e3e3 1px, transparent 0);
+  background-position: 0 0, calc(1 * 25px) calc(1 * 25px);
+  background-attachment: fixed;
+  background-size: calc(1 * 50px) calc(1 * 50px);
+}
+
+.container {
+  width: 100%;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.logo {
+  margin-bottom: 40px;
+}
+
+.content {
+  width: 100%;
+  max-width: 450px;
+  padding: 40px;
+  border-radius: 15px;
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  // box-shadow: 0 0 15px 0 rgb(0 0 0 / 10%);
+  // box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px;
+  // box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 15px 0px;
+}
+
+.title {
+  width: 100%;
+  margin: 0 0 40px 0;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 30px;
+}
+
+.label {
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0 10px 0 5px;
+}
+
+.registerLink {
+  margin-left: 10px;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.hide {
+  visibility: hidden;
+}
