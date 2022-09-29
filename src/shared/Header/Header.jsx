@@ -1,11 +1,13 @@
 import React from 'react';
-import { Link, NavLink } from 'react-router-dom';
-import { Avatar, Link as LinkDesign, User } from '@geist-ui/core';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { Avatar, Button, User } from '@geist-ui/core';
 import Container from '../Container/Container';
 
 import s from './Header.module.scss';
 
 const Header = () => {
+  const navigate = useNavigate();
+
   return (
     <header className={s.header}>
       <Container>
@@ -20,20 +22,22 @@ const Header = () => {
             <NavLink to="/profile" className={({ isActive }) => (isActive ? `${s.navLink} ${s.active}` : s.navLink)}>
               Profile
             </NavLink>
-            <NavLink to="/questioins" className={({ isActive }) => (isActive ? `${s.navLink} ${s.active}` : s.navLink)}>
+            <NavLink to="/questions" className={({ isActive }) => (isActive ? `${s.navLink} ${s.active}` : s.navLink)}>
               Questions
             </NavLink>
           </nav>
 
-          <div className={s.user}>
-            <Link to={'/profile'}> //! add color default
+          {/* //! add color default */}
+          {/* <div className={s.user}>
+            <Link to={'/profile'}> 
               <Avatar scale={1.5} src={`${process.env.REACT_APP_API_URL}images/defaultAvatar/defaultAvatar.jpg`} text="YC" />
             </Link>
             <div className={s.userInfo}>
               <span className={s.userName}>ychuiko</span>
               <span className={s.userRole}>user</span>
             </div>
-          </div>
+          </div> */}
+          <Button scale={0.8} auto type='secondary' onClick={() => {navigate("/login")}}>Sign in</Button>
 
           {/* <User src={`${process.env.REACT_APP_API_URL}images/defaultAvatar/defaultAvatar.jpg`} name="ychuiko">
             user
