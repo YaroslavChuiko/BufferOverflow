@@ -1,17 +1,21 @@
 import { Button, Dot, Input, Text, useToasts } from '@geist-ui/core';
 import { Lock, User } from '@geist-ui/icons';
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import api from '../../lib/axios';
 import s from './Login.module.scss';
 
 const Login = () => {
+  const navigate = useNavigate();
   const { setToast } = useToasts();
-  const [login, setLogin] = useState('');
-  const [password, setPassword] = useState('');
-  const [loginStatus, setLoginStatus] = useState({ type: '', message: '', showNotify: false, notifyType: '' });
-  const [passwordStatus, setPasswordStatus] = useState({ type: '', message: '', showNotify: false, notifyType: '' });
   const [loading, setLoading] = useState(false);
+  const initialInputStatus = { type: '', message: '', showNotify: false, notifyType: '' };
+
+  const [login, setLogin] = useState('');
+  const [loginStatus, setLoginStatus] = useState(initialInputStatus);
+
+  const [password, setPassword] = useState('');
+  const [passwordStatus, setPasswordStatus] = useState(initialInputStatus);
 
   const handleLoginChange = (e) => {
     setLogin(e.target.value);
@@ -32,18 +36,26 @@ const Login = () => {
       const response = await api.post('auth/login', data);
       setLoading(false);
 
-      setLoginStatus(response.data);
-      setPasswordStatus(response.data);
-
-      const inputStatus = {
-        type: response.data.success ? '' : 'error',
-        message: response.data.message,
-        showNotify: !response.data.success,
-        notifyType: response.data.success ? '' : 'error',
-      };
-
-      setLoginStatus(inputStatus);
-      setPasswordStatus(inputStatus);
+      if (!response.data.success) {
+        // const inputStatus = {
+        //   type: response.data.success ? '' : 'error',
+        //   message: response.data.message,
+        //   showNotify: !response.data.success,
+        //   notifyType: response.data.success ? '' : 'error',
+        // };
+        const inputStatus = {
+          type: 'error',
+          message: response.data.message,
+          showNotify: !response.data.success,
+          notifyType: 'error',
+        };
+  
+        setLoginStatus(inputStatus);
+        setPasswordStatus(inputStatus);
+      } else {
+        //save user data to store
+        navigate('/');
+      }
     } catch (error) {
       setLoading(false);
       setToast({
@@ -56,7 +68,7 @@ const Login = () => {
 
   const notyfication = (showNotify, notifyType, message) => (
     <span className={showNotify ? '' : s.hide}>
-      <Dot type={notifyType} />
+      <Dot type={notifyType} scale={0.5}/>
       <Text small type={notifyType}>
         {message}
       </Text>
