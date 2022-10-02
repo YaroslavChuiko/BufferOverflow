@@ -1,12 +1,15 @@
 import { Button, Dot, Input, Text, useToasts } from '@geist-ui/core';
 import { Lock, User } from '@geist-ui/icons';
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import api from '../../lib/axios';
+import { userSlice } from '../../store/slices/userSlice';
 import s from './Login.module.scss';
 
 const Login = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const { setToast } = useToasts();
   const [loading, setLoading] = useState(false);
   const initialInputStatus = { type: '', message: '', showNotify: false, notifyType: '' };
@@ -54,6 +57,7 @@ const Login = () => {
         setPasswordStatus(inputStatus);
       } else {
         //save user data to store
+        dispatch(userSlice.actions.set(response.data.user));
         navigate('/');
       }
     } catch (error) {
