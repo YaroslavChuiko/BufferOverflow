@@ -5,15 +5,20 @@ const initialState = {
   loading: false,
   loggedIn: false,
   userData: null,
+  pageSize: JSON.parse(localStorage.getItem('pageSize')) || 5,  
+  watchedTags: null,
 };
 
 export const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    set: (state, action) => {
+    setUser: (state, action) => {
       state.loggedIn = true;
       state.userData = action.payload;
+    },
+    setPageSize: (state, action) => {
+      state.pageSize = action.payload.pageSize;
     },
   },
   extraReducers: {
