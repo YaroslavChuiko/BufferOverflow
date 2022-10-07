@@ -57,7 +57,7 @@ const Login = () => {
         setPasswordStatus(inputStatus);
       } else {
         //save user data to store
-        dispatch(userSlice.actions.set(response.data.user));
+        dispatch(userSlice.actions.setUser(response.data.user));
         navigate('/');
       }
     } catch (error) {
