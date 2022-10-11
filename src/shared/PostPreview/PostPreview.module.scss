@@ -2,3 +2,39 @@
   // margin-bottom: 10px !important;
   width: 100%;
 }
+
+.title {
+  margin-bottom: 0;
+}
+
+.titleLink {
+  color: #000;
+  font-size: 22px;
+  // margin-bottom: 10px;
+  
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.categories {
+  margin-bottom: 16px;
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.info {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+}
+
+.user {
+  display: flex;
+  align-items: center;
+  margin-right: 5px;
+}
