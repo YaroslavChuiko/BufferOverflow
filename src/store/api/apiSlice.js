@@ -1,20 +1,18 @@
-// Import the RTK Query methods from the React-specific entry point
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
-// Define our single API slice object
 export const apiSlice = createApi({
-  // The cache reducer expects to be added at `state.api` (already default - this is optional)
   reducerPath: 'api',
-  // All of our requests will have URLs starting with '/fakeApi'
   baseQuery: fetchBaseQuery({ baseUrl: process.env.REACT_APP_API_URL }),
-  // The "endpoints" represent operations and requests for this server
+  tagTypes: ['Post'],
   endpoints: (builder) => ({
-    // The `getPosts` endpoint is a "query" operation that returns data
     getPosts: builder.query({
-      // The URL for the request is '/fakeApi/posts'
       query: (queryParams) => `/posts${queryParams}`,
       transformResponse(posts, meta) {
         return { posts, totalCount: Number(meta.response.headers.get('X-Total-Count')) };
+      },
+      providesTags: (result, error, arg) => {
+        const posts = result?.posts || [];
+        return ['Post', ...posts.map(({ id }) => ({ type: 'Post', id }))];
       },
     }),
     getPostAuthor: builder.query({
@@ -23,8 +21,10 @@ export const apiSlice = createApi({
     getPostCategories: builder.query({
       query: (queryParams) => `/categories${queryParams}`,
     }),
+    checkPostLike: builder.query({
+      query: (postId) => `/posts/${postId}/checkLike`,
+    }),
   }),
 });
 
-// Export the auto-generated hook for the `getPosts` query endpoint
-export const { useGetPostsQuery, useGetPostAuthorQuery, useGetPostCategoriesQuery } = apiSlice;
+export const { useGetPostsQuery, useGetPostAuthorQuery, useGetPostCategoriesQuery, useCheckPostLikeQuery } = apiSlice;
