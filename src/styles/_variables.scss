@@ -1,5 +1,50 @@
-// :root {
-//   --text: #222;
-// }
+//Background
+$background-color: #fff;
 
-// $bg: peachpuff;
+//Foregraund
+$foreground-color: #000;
+
+//Accents
+$accent-1: #fafafa;
+$accent-2: #eaeaea;
+$accent-3: #999;
+$accent-4: #888;
+$accent-5: #666;
+$accent-6: #444;
+$accent-7: #333;
+$accent-8: #111;
+
+//Success
+$success-lighter: #d3e5ff;
+$success-light: #3291ff;
+$success: #0070f3;
+$success-dark: #0761d1;
+
+//Error
+$error-lighter: #f7d4d6;
+$error-light: #ff1a1a;
+$error: #e00;
+$error-dark: #c50000;
+
+//Warning
+$warning-lighter: #ffefcf;
+$warning-light: #f7b955;
+$warning: #f5a623;
+$warning-dark: #ab570a;
+
+//Cyan
+$cyan-lighter: #aaffec;
+$cyan-light: #79ffe1;
+$cyan: #50e3c2;
+$cyan-dark: #29bc9b;
+
+//Violet
+$violet-lighter: #e3d7fc;
+$violet-light: #8a63d2;
+$violet: #7928ca;
+$violet-dark: #4c2889;
+
+//Highlight
+$highlight-alert: #ff0080;
+$highlight-purple: #f81ce5;
+$highlight-magenta: #eb367f;
