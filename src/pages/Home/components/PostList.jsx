@@ -10,7 +10,7 @@ import { selectUser } from '../../../store/selectors';
 
 import s from './PostList.module.scss';
 
-const PostList = ({ params }) => {
+const PostList = ({ params, filter }) => {
   let [searchParams, setSearchParams] = useSearchParams();
   const [page, setPage] = useState(1);
   const { pageSize } = useSelector(selectUser);
@@ -24,6 +24,8 @@ const PostList = ({ params }) => {
   const param = new URLSearchParams();
   param.append('_start', String(pageSize * page - pageSize));
   param.append('_end', String(pageSize * page));
+  param.append('post_categories', filter);
+  // post_categories=1,
   for (const key in params) {
     param.append(key, params[key]);
   }
