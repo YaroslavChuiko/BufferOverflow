@@ -24,7 +24,19 @@ export const apiSlice = createApi({
     checkPostLike: builder.query({
       query: (postId) => `/posts/${postId}/checkLike`,
     }),
+    getCategories: builder.query({
+      query: (q) => `/categories?_end=10&_order=ASC&_sort=title&_start=0&q=${q}`,
+      transformResponse(categories) {
+        return categories.map((item) => ({ id: item.id, label: item.title, value: item.title }));
+      },
+    }),
   }),
 });
 
-export const { useGetPostsQuery, useGetPostAuthorQuery, useGetPostCategoriesQuery, useCheckPostLikeQuery } = apiSlice;
+export const {
+  useGetPostsQuery,
+  useGetPostAuthorQuery,
+  useGetPostCategoriesQuery,
+  useCheckPostLikeQuery,
+  useLazyGetCategoriesQuery,
+} = apiSlice;
