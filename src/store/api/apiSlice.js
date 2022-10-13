@@ -15,11 +15,21 @@ export const apiSlice = createApi({
         return ['Post', ...posts.map(({ id }) => ({ type: 'Post', id }))];
       },
     }),
+    getPost: builder.query({
+      query: (postId) => `/posts/${postId}`,
+      providesTags: (result, error, arg) => [{type: 'Post', id: arg}],
+    }),
     getPostAuthor: builder.query({
       query: (userId) => `/users/${userId}`,
     }),
     getPostCategories: builder.query({
       query: (queryParams) => `/categories${queryParams}`,
+    }),
+    getPostComments: builder.query({
+      query: (queryParams) => `/comments/${queryParams}`,
+      transformResponse(comments, meta) {
+        return { comments, totalCount: Number(meta.response.headers.get('X-Total-Count')) };
+      },
     }),
     checkPostLike: builder.query({
       query: (postId) => `/posts/${postId}/checkLike`,
@@ -35,8 +45,12 @@ export const apiSlice = createApi({
 
 export const {
   useGetPostsQuery,
+  useGetPostQuery,
   useGetPostAuthorQuery,
+  useLazyGetPostAuthorQuery,
   useGetPostCategoriesQuery,
+  useLazyGetPostCategoriesQuery,
+  useGetPostCommentsQuery,
   useCheckPostLikeQuery,
   useLazyGetCategoriesQuery,
 } = apiSlice;
