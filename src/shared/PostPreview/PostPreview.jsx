@@ -29,7 +29,7 @@ const PostPreview = ({ post }) => {
   return (
     <Card mb="10px">
       <h3 className={s.title}>
-        <Link className={s.titleLink} to={`/question/${post.id}`}>
+        <Link className={s.titleLink} to={`/post/${post.id}`}>
           {capitalizeFirstLetter(post.title)}
         </Link>
       </h3>
@@ -44,7 +44,7 @@ const PostPreview = ({ post }) => {
       </div>
       <div className={s.footer}>
         <div className={s.info}>
-          <div className={s.user}>
+          <div className={s.author}>
             by
             {isAuthorSuccess && (
               <>
