@@ -1,10 +1,14 @@
 .header {
-  position: sticky;
+  width: 100%;
+  position: fixed;
   top: 0;
-  z-index: 999;
+  right: 0;
+  left: 0;
+  z-index: 9999;
   height: 64px;
-  background-color: #fff;
   box-shadow: 0 0 15px 0 rgb(0 0 0 / 10%);
+  backdrop-filter: saturate(180%) blur(5px);
+  background-color: rgba(255, 255, 255, 0.8);
 }
 
 .content {
@@ -31,7 +35,7 @@
   text-decoration: none;
 
   transition: color, backgtound-color, 200ms ease-in;
-  
+
   &:hover {
     color: #000;
     background-color: rgba(#aeaeae, 0.2);
