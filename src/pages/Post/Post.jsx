@@ -7,7 +7,7 @@ import Vote from '../../shared/Vote/Vote';
 import {
   useGetPostCommentsQuery,
   useGetPostQuery,
-  useLazyGetPostAuthorQuery,
+  useLazyGetAuthorQuery,
   useLazyGetPostCategoriesQuery,
 } from '../../store/api/apiSlice';
 import capitalizeFirstLetter from '../../utils/capitalizeFirstLetter';
@@ -16,7 +16,7 @@ import s from './Post.module.scss';
 
 const Post = () => {
   // const { postId } = useParams();
-  const postId = 3;
+  const postId = 1;
 
   const {
     data: post,
@@ -26,7 +26,7 @@ const Post = () => {
     error: postError,
   } = useGetPostQuery(postId);
 
-  const [getPostAuthor, { data: author, isLoading: isAuthorLoading, isSuccess: isAuthorSuccess }] = useLazyGetPostAuthorQuery();
+  const [getPostAuthor, { data: author, isLoading: isAuthorLoading, isSuccess: isAuthorSuccess }] = useLazyGetAuthorQuery();
   const [getPostCategories, { data: categories, isLoading: isCategoriesLoading, isSuccess: isCategoriesSuccess }] =
     useLazyGetPostCategoriesQuery();
 

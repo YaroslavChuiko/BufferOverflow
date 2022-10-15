@@ -1,7 +1,7 @@
 import { Avatar, Card, Tag, Text } from '@geist-ui/core';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
-import { useGetPostAuthorQuery, useGetPostCategoriesQuery } from '../../store/api/apiSlice';
+import { useGetAuthorQuery, useGetPostCategoriesQuery } from '../../store/api/apiSlice';
 import capitalizeFirstLetter from '../../utils/capitalizeFirstLetter';
 import Vote from '../Vote/Vote';
 import s from './PostPreview.module.scss';
@@ -24,7 +24,7 @@ const PostPreview = ({ post }) => {
     isSuccess: isAuthorSuccess,
     isError: isAuthorErrod,
     error: authorError,
-  } = useGetPostAuthorQuery(post.author_id);
+  } = useGetAuthorQuery(post.author_id);
 
   return (
     <Card mb="10px">
