@@ -1,0 +1,26 @@
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 5px;
+}
+
+.answerInfo {
+  display: flex;
+  align-items: center;
+}
+
+.author {
+  display: flex;
+  align-items: center;
+  margin-right: 10px;
+}
+
+.date {
+  // font-size: 14px;
+
+}
+
+.content {
+  margin-left: 45px;
+}
