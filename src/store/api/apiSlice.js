@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 export const apiSlice = createApi({
   reducerPath: 'api',
   baseQuery: fetchBaseQuery({ baseUrl: process.env.REACT_APP_API_URL }),
-  tagTypes: ['Post'],
+  tagTypes: ['Post', 'Comment'],
   endpoints: (builder) => ({
     getPosts: builder.query({
       query: (queryParams) => `/posts${queryParams}`,
@@ -19,20 +19,24 @@ export const apiSlice = createApi({
       query: (postId) => `/posts/${postId}`,
       providesTags: (result, error, arg) => [{type: 'Post', id: arg}],
     }),
-    getPostAuthor: builder.query({
+    getAuthor: builder.query({
       query: (userId) => `/users/${userId}`,
     }),
     getPostCategories: builder.query({
       query: (queryParams) => `/categories${queryParams}`,
     }),
     getPostComments: builder.query({
-      query: (queryParams) => `/comments/${queryParams}`,
+      query: (queryParams) => `/comments${queryParams}`,
       transformResponse(comments, meta) {
         return { comments, totalCount: Number(meta.response.headers.get('X-Total-Count')) };
       },
+      providesTags: (result, error, arg) => {
+        const comments = result?.comments || [];
+        return ['Comment', ...comments.map(({ id }) => ({ type: 'Comment', id }))];
+      },
     }),
     checkPostLike: builder.query({
-      query: (postId) => `/posts/${postId}/checkLike`,
+      query: ({target, id}) => `/${target}/${id}/checkLike`,
     }),
     getCategories: builder.query({
       query: (q) => `/categories?_end=10&_order=ASC&_sort=title&_start=0&q=${q}`,
@@ -46,8 +50,8 @@ export const apiSlice = createApi({
 export const {
   useGetPostsQuery,
   useGetPostQuery,
-  useGetPostAuthorQuery,
-  useLazyGetPostAuthorQuery,
+  useGetAuthorQuery,
+  useLazyGetAuthorQuery,
   useGetPostCategoriesQuery,
   useLazyGetPostCategoriesQuery,
   useGetPostCommentsQuery,
