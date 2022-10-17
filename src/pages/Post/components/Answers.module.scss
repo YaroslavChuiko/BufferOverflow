@@ -1,15 +1,38 @@
 @use '../../../styles/variables' as *;
 
-.answersHeader {
-
+.answers {
+  margin-bottom: 30px;
 }
 
-.answersTitle {
-  font-size: 24px;
-  margin: 0 0 10px 30px;
-  // color: $accent-6;
+.header {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.headerContent {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 15px;
+  margin-bottom: 15px;
+}
+
+.headerTitle {
+  font-size: 22px;
+  font-weight: normal;
+  margin: 0;
+}
+
+.sortedBy {
+  display: flex;
+  align-items: center;
+}
+
+.sortedByLabel {
+  margin-right: 10px;
+  font-size: 14px;
 }
 
 .answersContent {
-  
+  margin-bottom: 30px;
 }

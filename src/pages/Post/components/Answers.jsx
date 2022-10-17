@@ -1,50 +1,83 @@
-import { Card, Divider, Loading } from '@geist-ui/core';
-import React from 'react';
-import { useGetPostCommentsQuery } from '../../../store/api/apiSlice';
+import { Divider, Loading, Select } from '@geist-ui/core';
+import { useState } from 'react';
+import { useGetPostAnswersQuery } from '../../../store/api/apiSlice';
+
+import Answer from './Answer';
 import s from './Answers.module.scss';
 
 const Answers = ({ postId }) => {
-  // comments?_end=25&_order=DESC&_sort=id&_start=0&post_id=3,
+  const selectOptions = [
+    { label: 'Highest score', value: 'highestScore' },
+    { label: 'Newest', value: 'newest' },
+  ];
+  const sortingOptions = {
+    'highestScore': {
+      '_order': 'DESC',
+      '_sort': 'rating',
+      'status': 'active',
+    },
+    'newest': {
+      '_order': 'DESC',
+      '_sort': 'publish_date',
+      'status': 'active',
+    },
+  };
+
+  const [sortedBy, setSortedBy] = useState(JSON.parse(sessionStorage.getItem('answersSortedBy')) || selectOptions[0].value);
+
+  const handleSortedByChange = (val) => {
+    sessionStorage.setItem('answersSortedBy', JSON.stringify(val));
+    setSortedBy(val);
+  };
+
   const param = new URLSearchParams();
   param.append('_start', String(0));
   param.append('_end', String(10));
-  param.append('_order', 'DESC');
-  param.append('_sort', 'rating');
   param.append('post_id', postId);
+
+  for (const key in sortingOptions[sortedBy]) {
+    param.append(key, sortingOptions[sortedBy][key]);
+  }
 
   const {
     data,
-    isLoading: isCommentsLoading,
-    isSuccess: isCommentsSuccess,
-    isError: isCommentsError,
-    error: commentsError,
-  } = useGetPostCommentsQuery(`?${param.toString()}`);
-
-  if (isCommentsSuccess) {
-    console.log('data', data);
-  }
+    isLoading: isAnswersLoading,
+    isSuccess: isAnswersSuccess,
+    isError: isAnswersError,
+    error: answersError,
+  } = useGetPostAnswersQuery(`?${param.toString()}`);
 
   let content;
-  if (isCommentsLoading) {
+  if (isAnswersLoading) {
     content = <Loading>Loading</Loading>;
-  } else if (isCommentsSuccess) {
-    content = data.comments.map((comment, index) => <Card key={index}>{comment.content}</Card>);
-  } else if (isCommentsError) {
+  } else if (isAnswersSuccess) {
+    content = data.comments.map((comment, index) => <Answer key={index} answer={comment} />);
+  } else if (isAnswersError) {
     content = <div>{postError.toString()}</div>;
   }
 
   return (
     <div className={s.answers}>
-      <div className={s.answersHeader}>
-        <h3 className={s.answersTitle}>
-          {isCommentsSuccess && data.totalCount} {isCommentsSuccess && data.totalCount > 1 ? 'Answers' : 'Answer'}
-        </h3>
+      <div className={s.header}>
+        <div className={s.headerContent}>
+          <h3 className={s.headerTitle}>
+            {isAnswersSuccess && data.totalCount} {isAnswersSuccess && data.totalCount > 1 ? 'Answers' : 'Answer'}
+          </h3>
+
+          <div className={s.sortedBy}>
+            <span className={s.sortedByLabel}>Sorted by:</span>
+            <Select placeholder={'Sort by'} value={sortedBy} onChange={handleSortedByChange}>
+              {selectOptions.map((item, index) => (
+                <Select.Option key={index} value={item.value}>
+                  {item.label}
+                </Select.Option>
+              ))}
+            </Select>
+          </div>
+        </div>
         <Divider />
       </div>
-      <div className={s.answersContent}>
-
-      {content}
-      </div>
+      <div className={s.answersContent}>{content}</div>
     </div>
   );
 };
