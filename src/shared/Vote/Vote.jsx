@@ -9,6 +9,9 @@ import s from './Vote.module.scss';
 const Vote = ({ postId = null, commentId = null, voteCount }) => {
   const { loggedIn, userData } = useSelector(selectUser);
 
+  const target = postId ? 'posts' : 'comments';
+  const id = postId || commentId;
+
   const {
     data: like,
     isLoading: isLikeLoading,
@@ -16,7 +19,7 @@ const Vote = ({ postId = null, commentId = null, voteCount }) => {
     isError: isLikeErrod,
     error: likeError,
     refetch: likeRefetch,
-  } = useCheckPostLikeQuery(postId);
+  } = useCheckPostLikeQuery({ target, id });
 
   const [addLike, { isLoading: isAddLikeLoading, isSuccess: isAddLikeSuccess }] = useAddLikeMutation();
   const [updateLike, { isLoading: isUpdateLikeLoading, isSuccess: isUpdateLikeSuccess }] = useUpdateLikeMutation();
@@ -32,7 +35,7 @@ const Vote = ({ postId = null, commentId = null, voteCount }) => {
     const likeInfo = {
       author_id: userData.id,
       target_post: postId,
-      terget_comment: commentId,
+      target_comment: commentId,
       type: 'like',
     };
 
@@ -64,7 +67,7 @@ const Vote = ({ postId = null, commentId = null, voteCount }) => {
     const likeInfo = {
       author_id: userData.id,
       target_post: postId,
-      terget_comment: commentId,
+      target_comment: commentId,
       type: 'dislike',
     };
 
