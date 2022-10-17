@@ -1,16 +1,15 @@
 import { Avatar, Divider, Loading, Tag, Text } from '@geist-ui/core';
 import moment from 'moment';
-import React, { useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useEffect } from 'react';
 import Container from '../../shared/Container/Container';
 import Vote from '../../shared/Vote/Vote';
 import {
-  useGetPostCommentsQuery,
   useGetPostQuery,
   useLazyGetAuthorQuery,
-  useLazyGetPostCategoriesQuery,
+  useLazyGetPostCategoriesQuery
 } from '../../store/api/apiSlice';
 import capitalizeFirstLetter from '../../utils/capitalizeFirstLetter';
+import AnswerEditor from './components/AnswerEditor';
 import Answers from './components/Answers';
 import s from './Post.module.scss';
 
@@ -42,24 +41,12 @@ const Post = () => {
     }
   }, [post]);
 
-  // if (isPostSuccess) {
-  //   console.log('post', post);
-  // }
-
-  // if (isAuthorSuccess) {
-  //   console.log('author', author);
-  // }
-
-  // if (isCategoriesSuccess) {
-  //   console.log('categories', categories);
-  // }
-
   if (isPostLoading) {
     return <Loading>Loading</Loading>;
   } else if (isPostError) {
     return <div>{postError.toString()}</div>;
   }
-  // Ea molestias quasi exercitationem repellat qui ipsa sit aut
+
   return (
     <Container>
       <div className={s.post}>
@@ -109,7 +96,8 @@ const Post = () => {
           </div>
         </div>
 
-        <Answers postId={postId}/>
+        <Answers postId={postId} />
+        <AnswerEditor postId={postId} />
       </div>
     </Container>
   );
