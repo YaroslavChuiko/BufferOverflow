@@ -1,0 +1,36 @@
+.header {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.headerContent {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 15px;
+  margin-bottom: 10px;
+}
+
+.headerTitle {
+  font-size: 22px;
+  font-weight: normal;
+  margin: 0;
+}
+
+.preview {
+  margin: 30px 0;
+}
+
+.notLoggedIn {
+  width: 100%;
+  margin: 20px;
+  display: flex;
+  font-size: 18px;
+  align-items: center;
+  justify-content: center;
+
+  & span {
+    margin-right: 5px;
+  }
+}
+
