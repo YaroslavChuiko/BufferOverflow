@@ -1,13 +1,15 @@
 import { Avatar, Card, Text } from '@geist-ui/core';
 import moment from 'moment';
-import React from 'react';
-import { useGetAuthorQuery } from '../../../store/api/apiSlice';
-import capitalizeFirstLetter from '../../../utils/capitalizeFirstLetter';
+import { useSelector } from 'react-redux';
 import Vote from '../../../shared/Vote/Vote';
+import { useDeleteAnswerMutation, useGetAuthorQuery } from '../../../store/api/apiSlice';
+import { selectUser } from '../../../store/selectors';
 
 import s from './Answer.module.scss';
 
 const Answer = ({ answer }) => {
+  const { loggedIn, userData } = useSelector(selectUser);
+
   const {
     data: author,
     isLoading: isAuthorLoading,
@@ -16,11 +18,31 @@ const Answer = ({ answer }) => {
     error: authorError,
   } = useGetAuthorQuery(answer.author_id);
 
+  const [deleteAnswer, { isLoading, isSuccess }] = useDeleteAnswerMutation();
+
+  const handleDeleteClick = async (e) => {
+    e.preventDefault();
+    await deleteAnswer(answer.id);
+  };
+
+  let postControl;
+
+  if (isAuthorSuccess && loggedIn && author.id == userData.id) {
+    postControl = (
+      <div className={s.controlPost}>
+        <button className={s.button}>Edit</button>
+        <button className={`${s.button} ${s.delete}`} onClick={handleDeleteClick}>
+          Delete
+        </button>
+      </div>
+    );
+  }
+
   return (
     <Card mb="20px">
       <div className={s.header}>
-        <div className={s.answerInfo}>
-          <div className={s.author}>
+        <div className={s.info}>
+          <div className={s.infoAuthor}>
             {isAuthorSuccess && (
               <>
                 <Avatar src={`${process.env.REACT_APP_GET_IMG_BASEURL}${author?.profile_picture}`} mr="10px" scale={1.5} />
@@ -31,13 +53,26 @@ const Answer = ({ answer }) => {
             )}
           </div>
 
-          <div className={s.date} title={answer.publish_date}>
-            {moment(answer.publish_date).fromNow()}
+          <div className={s.infoDate} title={answer.publish_date}>
+            {moment(answer.publish_date).format('lll')}
           </div>
         </div>
         <Vote commentId={answer.id} voteCount={answer.rating} />
       </div>
-      <div className={s.content}>{capitalizeFirstLetter(answer.content)}</div>
+
+      <div className={s.content} dangerouslySetInnerHTML={{ __html: answer.content }}></div>
+
+      <div className={s.footer}>
+        <div className={s.control}>
+          <div className={s.controlComments}>
+            <button className={s.button}>Show comments</button>
+          </div>
+
+          {postControl}
+        </div>
+
+        {/* <div className={s.comments}></div> */}
+      </div>
     </Card>
   );
 };

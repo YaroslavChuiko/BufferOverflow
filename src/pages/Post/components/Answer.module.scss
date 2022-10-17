@@ -1,3 +1,5 @@
+@use '../../../styles/variables' as *;
+
 .header {
   display: flex;
   align-items: center;
@@ -5,22 +7,70 @@
   margin-bottom: 5px;
 }
 
-.answerInfo {
+.info {
   display: flex;
   align-items: center;
 }
 
-.author {
+.infoAuthor {
   display: flex;
   align-items: center;
   margin-right: 10px;
 }
 
-.date {
-  // font-size: 14px;
-
+.infoDate {
+  font-size: 14px;
+  color: $accent-5;
 }
 
 .content {
   margin-left: 45px;
+}
+
+.control {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.control {
+  margin: 10px 10px 10px 45px;
+}
+
+.controlPost {
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  background-color: $background-color;
+  color: $accent-5;
+  border: none;
+  outline: none;
+  border-radius: 6px;
+  min-width: 32px;
+
+  cursor: pointer;
+  user-select: none;
+  text-align: center;
+  vertical-align: middle;
+  padding: 0;
+  transition: all linear 200ms 0ms;
+  box-shadow: none;
+
+  &:hover {
+    color: $success-light;
+  }
+
+  & + .button {
+    margin-left: 20px;
+  }
+
+  &.delete {
+    &:hover {
+      color: $error-light;
+    }
+  }
 }
