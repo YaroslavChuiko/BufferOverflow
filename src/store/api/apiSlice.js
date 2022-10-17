@@ -25,7 +25,7 @@ export const apiSlice = createApi({
     getPostCategories: builder.query({
       query: (queryParams) => `/categories${queryParams}`,
     }),
-    getPostComments: builder.query({
+    getPostAnswers: builder.query({
       query: (queryParams) => `/comments${queryParams}`,
       transformResponse(comments, meta) {
         return { comments, totalCount: Number(meta.response.headers.get('X-Total-Count')) };
@@ -34,6 +34,22 @@ export const apiSlice = createApi({
         const comments = result?.comments || [];
         return ['Comment', ...comments.map(({ id }) => ({ type: 'Comment', id }))];
       },
+    }),
+    addNewAnswer: builder.mutation({
+      query: ({ author_id, post_id, content, status }) => ({
+        url: `/comments`,
+        method: 'POST',
+        body: { author_id, post_id, content, status },
+      }),
+      invalidatesTags: ['Comment'],
+    }),
+    deleteAnswer: builder.mutation({
+      query: (commentId) => ({
+        url: `/comments/${commentId}`,
+        method: 'DELETE',
+        body: {},
+      }),
+      invalidatesTags: ['Comment'],
     }),
     checkPostLike: builder.query({
       query: ({target, id}) => `/${target}/${id}/checkLike`,
@@ -54,7 +70,9 @@ export const {
   useLazyGetAuthorQuery,
   useGetPostCategoriesQuery,
   useLazyGetPostCategoriesQuery,
-  useGetPostCommentsQuery,
+  useGetPostAnswersQuery,
   useCheckPostLikeQuery,
   useLazyGetCategoriesQuery,
+  useAddNewAnswerMutation,
+  useDeleteAnswerMutation,
 } = apiSlice;
