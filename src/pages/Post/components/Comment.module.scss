@@ -1,0 +1,17 @@
+@use '../../../styles/variables' as *;
+
+.comment {
+  padding: 8px 0px 8px 65px;
+  border-bottom: 1px solid #f1f1f1;
+  font-size: 15px;
+}
+
+.author {
+  display: inline-flex;
+  margin: 0 5px;
+}
+
+.date {
+  color: $accent-5;
+  // font-size: 13px;
+}
