@@ -55,7 +55,7 @@ const Register = () => {
         setToast({ text: registerRes.data.message, type: 'success', delay: 4000 });
         const loginRes = await api.post('auth/login', { login, password });
         //save user data to store
-        navigate('/');
+        navigate('/', { replace: true });
       }
       setLoading(false);
     } catch (error) {
