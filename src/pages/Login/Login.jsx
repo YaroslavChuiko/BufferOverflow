@@ -58,7 +58,7 @@ const Login = () => {
       } else {
         //save user data to store
         dispatch(userSlice.actions.setUser(response.data.user));
-        navigate('/');
+        navigate(-1);
       }
     } catch (error) {
       setLoading(false);
