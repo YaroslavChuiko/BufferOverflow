@@ -30,14 +30,8 @@
 .control {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-}
-
-.control {
-  margin: 10px 10px 10px 45px;
-}
-
-.controlPost {
+  justify-content: flex-end;
+  margin: 0px 10px 10px 45px;
 }
 
 .button {
@@ -50,7 +44,6 @@
   border: none;
   outline: none;
   border-radius: 6px;
-  min-width: 32px;
 
   cursor: pointer;
   user-select: none;

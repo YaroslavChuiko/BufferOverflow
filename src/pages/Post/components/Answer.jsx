@@ -2,10 +2,11 @@ import { Avatar, Card, Text } from '@geist-ui/core';
 import moment from 'moment';
 import { useSelector } from 'react-redux';
 import Vote from '../../../shared/Vote/Vote';
-import { useDeleteAnswerMutation, useGetAnswerCommentsQuery, useGetAuthorQuery } from '../../../store/api/apiSlice';
+import { useDeleteAnswerMutation, useGetAuthorQuery } from '../../../store/api/apiSlice';
 import { selectUser } from '../../../store/selectors';
 
 import s from './Answer.module.scss';
+import CommentList from './CommentList';
 
 const Answer = ({ answer }) => {
   const { loggedIn, userData } = useSelector(selectUser);
@@ -18,14 +19,6 @@ const Answer = ({ answer }) => {
     error: authorError,
   } = useGetAuthorQuery(answer.author_id);
 
-  const {
-    data: comments,
-    isLoading: isCommentsLoading,
-    isSuccess: isCommentsSuccess,
-    isError: isCommentsErrod,
-    error: commentsError,
-  } = useGetAnswerCommentsQuery(answer.id);
-
   const [deleteAnswer, { isLoading, isSuccess }] = useDeleteAnswerMutation();
 
   const handleDeleteClick = async (e) => {
@@ -33,11 +26,11 @@ const Answer = ({ answer }) => {
     await deleteAnswer(answer.id);
   };
 
-  let postControl;
+  let control;
 
   if (isAuthorSuccess && loggedIn && author.id == userData.id) {
-    postControl = (
-      <div className={s.controlPost}>
+    control = (
+      <div className={s.control}>
         <button className={s.button}>Edit</button>
         <button className={`${s.button} ${s.delete}`} onClick={handleDeleteClick}>
           Delete
@@ -70,19 +63,9 @@ const Answer = ({ answer }) => {
 
       <div className={s.content} dangerouslySetInnerHTML={{ __html: answer.content }}></div>
 
-      <div className={s.footer}>
-        <div className={s.control}>
-          <div className={s.controlComments}>
-            {isCommentsSuccess && comments.totalCount > 0 && (
-              <button className={s.button}>Show {comments.totalCount} comments</button>
-            )}
-          </div>
+      <div className={s.footer}>{control}</div>
 
-          {postControl}
-        </div>
-
-        {/* <div className={s.comments}></div> */}
-      </div>
+      <CommentList answerId={answer.id} />
     </Card>
   );
 };
