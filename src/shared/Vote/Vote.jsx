@@ -6,11 +6,11 @@ import { useAddLikeMutation, useDeleteLikeMutation, useUpdateLikeMutation } from
 import { selectUser } from '../../store/selectors';
 import s from './Vote.module.scss';
 
-const Vote = ({ postId = null, commentId = null, voteCount }) => {
+const Vote = ({ postId = null, answerId = null, voteCount }) => {
   const { loggedIn, userData } = useSelector(selectUser);
 
-  const target = postId ? 'posts' : 'comments';
-  const id = postId || commentId;
+  const target = postId ? 'posts' : 'answers';
+  const id = postId || answerId;
 
   const {
     data: like,
@@ -35,7 +35,7 @@ const Vote = ({ postId = null, commentId = null, voteCount }) => {
     const likeInfo = {
       author_id: userData.id,
       target_post: postId,
-      target_comment: commentId,
+      target_answer: answerId,
       type: 'like',
     };
 
@@ -67,7 +67,7 @@ const Vote = ({ postId = null, commentId = null, voteCount }) => {
     const likeInfo = {
       author_id: userData.id,
       target_post: postId,
-      target_comment: commentId,
+      target_answer: answerId,
       type: 'dislike',
     };
 

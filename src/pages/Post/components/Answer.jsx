@@ -2,7 +2,7 @@ import { Avatar, Card, Text } from '@geist-ui/core';
 import moment from 'moment';
 import { useSelector } from 'react-redux';
 import Vote from '../../../shared/Vote/Vote';
-import { useDeleteAnswerMutation, useGetAuthorQuery } from '../../../store/api/apiSlice';
+import { useDeleteAnswerMutation, useGetAnswerCommentsQuery, useGetAuthorQuery } from '../../../store/api/apiSlice';
 import { selectUser } from '../../../store/selectors';
 
 import s from './Answer.module.scss';
@@ -17,6 +17,14 @@ const Answer = ({ answer }) => {
     isError: isAuthorErrod,
     error: authorError,
   } = useGetAuthorQuery(answer.author_id);
+
+  const {
+    data: comments,
+    isLoading: isCommentsLoading,
+    isSuccess: isCommentsSuccess,
+    isError: isCommentsErrod,
+    error: commentsError,
+  } = useGetAnswerCommentsQuery(answer.id);
 
   const [deleteAnswer, { isLoading, isSuccess }] = useDeleteAnswerMutation();
 
@@ -57,7 +65,7 @@ const Answer = ({ answer }) => {
             {moment(answer.publish_date).format('lll')}
           </div>
         </div>
-        <Vote commentId={answer.id} voteCount={answer.rating} />
+        <Vote answerId={answer.id} voteCount={answer.rating} />
       </div>
 
       <div className={s.content} dangerouslySetInnerHTML={{ __html: answer.content }}></div>
@@ -65,7 +73,9 @@ const Answer = ({ answer }) => {
       <div className={s.footer}>
         <div className={s.control}>
           <div className={s.controlComments}>
-            <button className={s.button}>Show comments</button>
+            {isCommentsSuccess && comments.totalCount > 0 && (
+              <button className={s.button}>Show {comments.totalCount} comments</button>
+            )}
           </div>
 
           {postControl}

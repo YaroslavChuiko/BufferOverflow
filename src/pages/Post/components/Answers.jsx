@@ -51,7 +51,7 @@ const Answers = ({ postId }) => {
   if (isAnswersLoading) {
     content = <Loading>Loading</Loading>;
   } else if (isAnswersSuccess) {
-    content = data.comments.map((comment, index) => <Answer key={index} answer={comment} />);
+    content = data.answers.map((answer, index) => <Answer key={index} answer={answer} />);
   } else if (isAnswersError) {
     content = <div>{postError.toString()}</div>;
   }

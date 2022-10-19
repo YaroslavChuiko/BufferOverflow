@@ -3,14 +3,14 @@ import { apiSlice } from './apiSlice';
 export const extendedApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     addLike: builder.mutation({
-      query: ({ author_id, target_post, target_comment, type }) => ({
+      query: ({ author_id, target_post, target_answer, type }) => ({
         url: `/likes`,
         method: 'POST',
-        body: { author_id, target_post, target_comment, type },
+        body: { author_id, target_post, target_answer, type },
       }),
-      async onQueryStarted({ target_post, target_comment, type }, { dispatch, queryFulfilled, getState }) {
-        const id = target_post || target_comment;
-        const tagType = target_post ? 'Post' : 'Comment';
+      async onQueryStarted({ target_post, target_answer, type }, { dispatch, queryFulfilled, getState }) {
+        const id = target_post || target_answer;
+        const tagType = target_post ? 'Post' : 'Answer';
         const tags = [{ type: tagType, id }];
         const patchResults = updateRating(dispatch, getState, tags, handleAddLike, type, id);
 
@@ -22,14 +22,14 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
       },
     }),
     updateLike: builder.mutation({
-      query: ({ author_id, target_post, target_comment, type }) => ({
+      query: ({ author_id, target_post, target_answer, type }) => ({
         url: `/likes`,
         method: 'POST',
-        body: { author_id, target_post, target_comment, type },
+        body: { author_id, target_post, target_answer, type },
       }),
-      async onQueryStarted({ target_post, target_comment, type }, { dispatch, queryFulfilled, getState }) {
-        const id = target_post || target_comment;
-        const tagType = target_post ? 'Post' : 'Comment';
+      async onQueryStarted({ target_post, target_answer, type }, { dispatch, queryFulfilled, getState }) {
+        const id = target_post || target_answer;
+        const tagType = target_post ? 'Post' : 'Answer';
         const tags = [{ type: tagType, id }];
         const patchResults = updateRating(dispatch, getState, tags, handleUpdateLike, type, id);
 
@@ -41,14 +41,14 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
       },
     }),
     deleteLike: builder.mutation({
-      query: ({ author_id, target_post, target_comment, type }) => ({
+      query: ({ author_id, target_post, target_answer, type }) => ({
         url: `/likes`,
         method: 'DELETE',
-        body: { author_id, target_post, target_comment },
+        body: { author_id, target_post, target_answer },
       }),
-      async onQueryStarted({ target_post, target_comment, type }, { dispatch, queryFulfilled, getState }) {
-        const id = target_post || target_comment;
-        const tagType = target_post ? 'Post' : 'Comment';
+      async onQueryStarted({ target_post, target_answer, type }, { dispatch, queryFulfilled, getState }) {
+        const id = target_post || target_answer;
+        const tagType = target_post ? 'Post' : 'Answer';
         const tags = [{ type: tagType, id }];
         const patchResults = updateRating(dispatch, getState, tags, handleDeleteLike, type, id);
 
@@ -87,11 +87,11 @@ const updateRating = (dispatch, getState, tags, handler, likeType, targetId) => 
           )
         );
         break;
-      case 'getPostComments':
+      case 'getPostAnswers':
         patchResults.push(
           dispatch(
             apiSlice.util.updateQueryData(endpointName, originalArgs, (draft) => {
-              const target = draft.comments.find((target) => target.id === targetId);
+              const target = draft.answers.find((target) => target.id === targetId);
               handler(target, likeType);
             })
           )
