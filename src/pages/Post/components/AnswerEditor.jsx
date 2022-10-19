@@ -64,14 +64,14 @@ const AnswerEditor = ({ postId }) => {
           )}
           <div className={s.preview} dangerouslySetInnerHTML={{ __html: editorValue }}></div>
 
-          <Button loading={isLoading} type="secondary-light" htmlType="submit" onClick={postAnswerClick}>
+          <Button loading={isLoading} type="success-light" htmlType="submit" onClick={postAnswerClick}>
             Post your answer
           </Button>
         </>
       ) : (
         <div className={s.notLoggedIn}>
-          <span>Sign up or </span>
-          <Link to={'/login'}>log in</Link>
+          <Link to={'/login'}>Login</Link>
+          <span>to post an answer</span>
         </div>
       )}
     </div>

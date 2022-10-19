@@ -21,6 +21,10 @@
   margin: 30px 0;
 }
 
+.notify {
+  font-size: 14px;
+}
+
 .notLoggedIn {
   width: 100%;
   margin: 20px;
@@ -30,7 +34,7 @@
   justify-content: center;
 
   & span {
-    margin-right: 5px;
+    margin: 0 5px;
   }
 }
 
