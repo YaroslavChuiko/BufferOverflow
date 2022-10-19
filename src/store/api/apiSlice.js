@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 export const apiSlice = createApi({
   reducerPath: 'api',
   baseQuery: fetchBaseQuery({ baseUrl: process.env.REACT_APP_API_URL }),
-  tagTypes: ['Post', 'Comment'],
+  tagTypes: ['Post', 'Answer', 'Comment'],
   endpoints: (builder) => ({
     getPosts: builder.query({
       query: (queryParams) => `/posts${queryParams}`,
@@ -26,7 +26,33 @@ export const apiSlice = createApi({
       query: (queryParams) => `/categories${queryParams}`,
     }),
     getPostAnswers: builder.query({
-      query: (queryParams) => `/comments${queryParams}`,
+      query: (queryParams) => `/answers${queryParams}`,
+      transformResponse(answers, meta) {
+        return { answers, totalCount: Number(meta.response.headers.get('X-Total-Count')) };
+      },
+      providesTags: (result, error, arg) => {
+        const answers = result?.answers || [];
+        return ['Answer', ...answers.map(({ id }) => ({ type: 'Answer', id }))];
+      },
+    }),
+    addNewAnswer: builder.mutation({
+      query: ({ author_id, post_id, content, status }) => ({
+        url: `/answers`,
+        method: 'POST',
+        body: { author_id, post_id, content, status },
+      }),
+      invalidatesTags: ['Answer'],
+    }),
+    deleteAnswer: builder.mutation({
+      query: (answerId) => ({
+        url: `/answers/${answerId}`,
+        method: 'DELETE',
+        body: {},
+      }),
+      invalidatesTags: ['Answer'],
+    }),
+    getAnswerComments: builder.query({
+      query: (answerId) => `/comments?_order=ASC&_sort=publish_date&status=active&answer_id=${answerId}`,
       transformResponse(comments, meta) {
         return { comments, totalCount: Number(meta.response.headers.get('X-Total-Count')) };
       },
@@ -35,15 +61,15 @@ export const apiSlice = createApi({
         return ['Comment', ...comments.map(({ id }) => ({ type: 'Comment', id }))];
       },
     }),
-    addNewAnswer: builder.mutation({
-      query: ({ author_id, post_id, content, status }) => ({
+    addNewComment: builder.mutation({
+      query: ({ author_id, answer_id, content, status }) => ({
         url: `/comments`,
         method: 'POST',
-        body: { author_id, post_id, content, status },
+        body: { author_id, answer_id, content, status },
       }),
       invalidatesTags: ['Comment'],
     }),
-    deleteAnswer: builder.mutation({
+    deleteComment: builder.mutation({
       query: (commentId) => ({
         url: `/comments/${commentId}`,
         method: 'DELETE',
@@ -70,9 +96,14 @@ export const {
   useLazyGetAuthorQuery,
   useGetPostCategoriesQuery,
   useLazyGetPostCategoriesQuery,
-  useGetPostAnswersQuery,
   useCheckPostLikeQuery,
   useLazyGetCategoriesQuery,
+
+  useGetPostAnswersQuery,
   useAddNewAnswerMutation,
   useDeleteAnswerMutation,
+
+  useGetAnswerCommentsQuery,
+  useAddNewCommentMutation,
+  useDeleteCommentMutation,
 } = apiSlice;
