@@ -2,6 +2,9 @@ import { apiSlice } from './apiSlice';
 
 export const extendedApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
+    checkLike: builder.query({
+      query: ({ target, id }) => `/${target}/${id}/checkLike`,
+    }),
     addLike: builder.mutation({
       query: ({ author_id, target_post, target_answer, type }) => ({
         url: `/likes`,
@@ -124,4 +127,5 @@ const handleDeleteLike = (target, likeType) => {
   }
 };
 
-export const { useAddLikeMutation, useDeleteLikeMutation, useUpdateLikeMutation } = extendedApiSlice;
+export const { useAddLikeMutation, useDeleteLikeMutation, useUpdateLikeMutation, useCheckLikeQuery, useLazyCheckLikeQuery } =
+  extendedApiSlice;
