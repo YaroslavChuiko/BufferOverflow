@@ -1,11 +1,10 @@
 import { Divider, Loading, Select } from '@geist-ui/core';
 import { useState } from 'react';
-import { useGetPostAnswersQuery } from '../../../store/api/apiSlice';
-
+import { useGetAnswersQuery } from '../../../store/api/answerSlice';
 import Answer from './Answer';
-import s from './Answers.module.scss';
+import s from './AnswerList.module.scss';
 
-const Answers = ({ postId }) => {
+const AnswerList = ({ postId }) => {
   const selectOptions = [
     { label: 'Highest score', value: 'highestScore' },
     { label: 'Newest', value: 'newest' },
@@ -45,7 +44,7 @@ const Answers = ({ postId }) => {
     isSuccess: isAnswersSuccess,
     isError: isAnswersError,
     error: answersError,
-  } = useGetPostAnswersQuery(`?${param.toString()}`);
+  } = useGetAnswersQuery(`?${param.toString()}`);
 
   let content;
   if (isAnswersLoading) {
@@ -82,4 +81,4 @@ const Answers = ({ postId }) => {
   );
 };
 
-export default Answers;
+export default AnswerList;
