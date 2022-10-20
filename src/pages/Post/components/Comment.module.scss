@@ -4,6 +4,7 @@
   padding: 8px 0px 8px 65px;
   border-bottom: 1px solid #f1f1f1;
   font-size: 15px;
+  border-radius: 6px;
 }
 
 .author {
@@ -13,4 +14,44 @@
 
 .date {
   color: $accent-5;
+  margin-right: 20px;
+}
+
+.actions {
+  display: inline-flex;
+  flex-wrap: nowrap;
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  background-color: transparent;
+  color: $accent-5;
+  border: none;
+  outline: none;
+  border-radius: 6px;
+
+  cursor: pointer;
+  user-select: none;
+  text-align: center;
+  vertical-align: middle;
+  padding: 0;
+  transition: all linear 200ms 0ms;
+  box-shadow: none;
+
+  &:hover {
+    color: $success-light;
+  }
+
+  & + .button {
+    margin-left: 20px;
+  }
+
+  &.delete {
+    &:hover {
+      color: $error-light;
+    }
+  }
 }
