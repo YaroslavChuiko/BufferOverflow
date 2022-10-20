@@ -3,18 +3,18 @@ import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import RichTextEditor from '../../../shared/RichTextEditor/RichTextEditor';
-import { useAddNewAnswerMutation } from '../../../store/api/apiSlice';
+import { useCreateAnswerMutation } from '../../../store/api/answerSlice';
 import { selectUser } from '../../../store/selectors';
 import { validateLength } from '../../../validation/richTextValidation';
-import s from './AnswerEditor.module.scss';
+import s from './AnswerCreate.module.scss';
 
-const AnswerEditor = ({ postId }) => {
+const AnswerCreate = ({ postId }) => {
   const { setToast } = useToasts();
   const { loggedIn, userData } = useSelector(selectUser);
   const [editorValue, setEditorValue] = useState('');
   const [notify, setNotify] = useState(null);
 
-  const [addNewAnswer, { isLoading, isSuccess }] = useAddNewAnswerMutation();
+  const [addNewAnswer, { isLoading, isSuccess }] = useCreateAnswerMutation();
 
   const postAnswerClick = async (e) => {
     e.preventDefault();
@@ -45,7 +45,7 @@ const AnswerEditor = ({ postId }) => {
   };
 
   return (
-    <div className={s.answerEditor}>
+    <div className={s.container}>
       <div className={s.header}>
         <div className={s.headerContent}>
           <h3 className={s.headerTitle}>{'Your Answer'}</h3>
@@ -78,4 +78,4 @@ const AnswerEditor = ({ postId }) => {
   );
 };
 
-export default AnswerEditor;
+export default AnswerCreate;
