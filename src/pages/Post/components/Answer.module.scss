@@ -1,5 +1,14 @@
 @use '../../../styles/variables' as *;
 
+.container {
+  background-color: $background-color;
+  width: 100%;
+  border-radius: 6px;
+  padding: 18px;
+  border: 1px solid $accent-2;
+  margin-bottom: 20px;
+}
+
 .header {
   display: flex;
   align-items: center;
@@ -39,7 +48,7 @@
   align-items: center;
   justify-content: center;
   font-size: 14px;
-  background-color: $background-color;
+  background-color: transparent;
   color: $accent-5;
   border: none;
   outline: none;
