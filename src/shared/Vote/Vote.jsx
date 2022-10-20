@@ -1,8 +1,8 @@
 import { Tooltip, useClasses } from '@geist-ui/core';
 import { ChevronDown, ChevronUp } from '@geist-ui/icons';
+import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { useCheckPostLikeQuery } from '../../store/api/apiSlice';
-import { useAddLikeMutation, useDeleteLikeMutation, useUpdateLikeMutation } from '../../store/api/likeSlice';
+import { useAddLikeMutation, useDeleteLikeMutation, useLazyCheckLikeQuery, useUpdateLikeMutation } from '../../store/api/likeSlice';
 import { selectUser } from '../../store/selectors';
 import s from './Vote.module.scss';
 
@@ -12,14 +12,13 @@ const Vote = ({ postId = null, answerId = null, voteCount }) => {
   const target = postId ? 'posts' : 'answers';
   const id = postId || answerId;
 
-  const {
-    data: like,
-    isLoading: isLikeLoading,
-    isSuccess: isLikeSuccess,
-    isError: isLikeErrod,
-    error: likeError,
-    refetch: likeRefetch,
-  } = useCheckPostLikeQuery({ target, id });
+  const [checkLike, { data: like, isLoading: isCheckLikeLoading, isSuccess: isCheckLikeSuccess }] = useLazyCheckLikeQuery();
+
+  useEffect(() => {
+    if (loggedIn) {
+      checkLike({ target, id });
+    }
+  }, []);
 
   const [addLike, { isLoading: isAddLikeLoading, isSuccess: isAddLikeSuccess }] = useAddLikeMutation();
   const [updateLike, { isLoading: isUpdateLikeLoading, isSuccess: isUpdateLikeSuccess }] = useUpdateLikeMutation();
@@ -28,7 +27,7 @@ const Vote = ({ postId = null, answerId = null, voteCount }) => {
   const handlePositiveVote = async (e) => {
     e.preventDefault();
 
-    if (!loggedIn || !isLikeSuccess) {
+    if (!loggedIn || !isCheckLikeSuccess) {
       return;
     }
 
@@ -42,17 +41,17 @@ const Vote = ({ postId = null, answerId = null, voteCount }) => {
     switch (like?.type) {
       case 'like':
         await deleteLike(likeInfo).unwrap();
-        likeRefetch();
+        checkLike({ target, id });
         break;
 
       case 'dislike':
         await updateLike(likeInfo).unwrap();
-        likeRefetch();
+        checkLike({ target, id });
         break;
 
       default:
         await addLike(likeInfo).unwrap();
-        likeRefetch();
+        checkLike({ target, id });
         break;
     }
   };
@@ -60,7 +59,7 @@ const Vote = ({ postId = null, answerId = null, voteCount }) => {
   const handleNegativeVote = async (e) => {
     e.preventDefault();
 
-    if (!loggedIn || !isLikeSuccess) {
+    if (!loggedIn || !isCheckLikeSuccess) {
       return;
     }
 
@@ -74,17 +73,17 @@ const Vote = ({ postId = null, answerId = null, voteCount }) => {
     switch (like?.type) {
       case 'dislike':
         await deleteLike(likeInfo).unwrap();
-        likeRefetch();
+        checkLike({ target, id });
         break;
 
       case 'like':
         await updateLike(likeInfo).unwrap();
-        likeRefetch();
+        checkLike({ target, id });
         break;
 
       default:
         await addLike(likeInfo).unwrap();
-        likeRefetch();
+        checkLike({ target, id });
         break;
     }
   };
