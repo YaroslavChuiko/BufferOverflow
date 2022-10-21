@@ -1,3 +1,5 @@
+@use '../../styles/variables' as *;
+
 .post {
   width: 100%;
   max-width: 800px;
@@ -5,12 +7,9 @@
   display: flex;
   flex-direction: column;
   margin-bottom: 50px;
-  // align-items: center;
-  // justify-content: flex-start;
 }
 
 .header {
-  // padding: 0 15px;
   width: 100%;
 }
 
@@ -20,12 +19,21 @@
   margin: 0 0 10px 0;
 }
 
-.headerInfo {
+.info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.postInfo {
   display: flex;
   align-items: center;
   font-size: 14px;
-  // margin-left: 10px;
-  margin-bottom: 10px;
+}
+
+.date {
+  color: $accent-5;
 }
 
 .author {
@@ -34,26 +42,68 @@
   margin-right: 5px;
 }
 
-.content  { //w 740px
+.container {
+  //w 740px
   // width: 80%;
-  width: 800px;
-  padding: 10px 30px;
-  margin-bottom: 40px;
+  margin: 0 auto 40px;
+  max-width: 800px;
+  padding: 0px 30px;
 }
 
-.contentText {
+.content {
   margin-bottom: 20px;
-  & > p {
-    margin: 0 0 10px 0;
-  }
 }
 
 .categories {
   // margin-bottom: 16px;
 }
 
-.contentFooter {
+.footer {
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+
+.postActions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.control {
+  margin: 0 15px;
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  background-color: transparent;
+  color: $accent-5;
+  border: none;
+  outline: none;
+  border-radius: 6px;
+
+  cursor: pointer;
+  user-select: none;
+  text-align: center;
+  vertical-align: middle;
+  padding: 0;
+  transition: all linear 200ms 0ms;
+  box-shadow: none;
+
+  &:hover {
+    color: $success-light;
+  }
+
+  & + .button {
+    margin-left: 25px;
+  }
+
+  &.delete {
+    &:hover {
+      color: $error-light;
+    }
+  }
 }
