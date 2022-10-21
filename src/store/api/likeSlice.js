@@ -90,7 +90,7 @@ const updateRating = (dispatch, getState, tags, handler, likeType, targetId) => 
           )
         );
         break;
-      case 'getPostAnswers':
+      case 'getAnswers':
         patchResults.push(
           dispatch(
             apiSlice.util.updateQueryData(endpointName, originalArgs, (draft) => {
