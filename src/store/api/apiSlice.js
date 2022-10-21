@@ -19,11 +19,35 @@ export const apiSlice = createApi({
       query: (postId) => `/posts/${postId}`,
       providesTags: (result, error, arg) => [{ type: 'Post', id: arg }],
     }),
-    getAuthor: builder.query({
-      query: (userId) => `/users/${userId}`,
+    createPost: builder.mutation({
+      query: ({ author_id, title, content, post_categories, status}) => ({
+        url: `/posts`,
+        method: 'POST',
+        body: { author_id, title, content, post_categories, status},
+      }),
+      invalidatesTags: ['Post'],
+    }),
+    updatePost: builder.mutation({
+      query: ({ id, author_id, title, content, post_categories, status }) => ({
+        url: `/posts/${id}`,
+        method: 'PUT',
+        body: { author_id, title, content, post_categories, status },
+      }),
+      invalidatesTags: (result, error, arg) => [{ type: 'Post', id: arg.id }],
+    }),
+    deletePost: builder.mutation({
+      query: (postId) => ({
+        url: `/posts/${postId}`,
+        method: 'DELETE',
+        body: {},
+      }),
+      invalidatesTags: ['Post'],
     }),
     getPostCategories: builder.query({
       query: (queryParams) => `/categories${queryParams}`,
+    }),
+    getAuthor: builder.query({
+      query: (userId) => `/users/${userId}`,
     }),
     getCategories: builder.query({
       query: (q) => `/categories?_end=10&_order=ASC&_sort=title&_start=0&q=${q}`,
@@ -39,6 +63,9 @@ export const apiSlice = createApi({
 export const {
   useGetPostsQuery,
   useGetPostQuery,
+  useCreatePostMutation,
+  useUpdatePostMutation,
+  useDeletePostMutation,
   useGetAuthorQuery,
   useLazyGetAuthorQuery,
   useGetPostCategoriesQuery,
