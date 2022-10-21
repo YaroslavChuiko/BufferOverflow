@@ -35,10 +35,10 @@ const Answer = ({ answer }) => {
     await deleteAnswer(answer.id);
   };
 
-  let control;
+  let actions;
 
   if (isAuthorSuccess && loggedIn && author.id == userData.id) {
-    control = (
+    actions = (
       <div className={s.control}>
         <button className={s.button} onClick={handleEditClick}>
           {isEdit ? 'Cancel' : 'Edit'}
@@ -58,7 +58,7 @@ const Answer = ({ answer }) => {
             {isAuthorSuccess && (
               <>
                 <Avatar src={`${process.env.REACT_APP_GET_IMG_BASEURL}${author?.profile_picture}`} mr="10px" scale={1.5} />
-                <Text span type="success">
+                <Text span type="success" title={`rating: ${author.rating}`}>
                   {author.login}
                 </Text>
               </>
@@ -80,7 +80,7 @@ const Answer = ({ answer }) => {
 
       <div className={s.content} dangerouslySetInnerHTML={{ __html: answer.content }}></div>
 
-      <div className={s.footer}>{control}</div>
+      <div className={s.footer}>{actions}</div>
 
       {isEdit ? <AnswerEdit answer={answer} setIsEdit={setIsEdit} /> : <CommentList answerId={answer.id} />}
     </div>
