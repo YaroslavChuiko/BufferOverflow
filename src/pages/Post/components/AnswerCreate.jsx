@@ -14,7 +14,7 @@ const AnswerCreate = ({ postId }) => {
   const [editorValue, setEditorValue] = useState('');
   const [notify, setNotify] = useState(null);
 
-  const [addNewAnswer, { isLoading, isSuccess }] = useCreateAnswerMutation();
+  const [createAnswer, { isLoading, isSuccess }] = useCreateAnswerMutation();
 
   const postAnswerClick = async (e) => {
     e.preventDefault();
@@ -32,7 +32,7 @@ const AnswerCreate = ({ postId }) => {
       status: 'active',
     };
     try {
-      await addNewAnswer(newAnswer).unwrap();
+      await createAnswer(newAnswer).unwrap();
       setEditorValue('');
       setNotify({ type: 'success', message: 'Successfully posted.' });
     } catch (error) {
