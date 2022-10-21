@@ -1,5 +1,6 @@
 import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
+// import 'react-quill/dist/quill.snow.css';
+import '../../styles/vendors/react-quill/quill.snow.css';
 
 import s from './RichTextEditor.module.scss';
 
@@ -38,7 +39,14 @@ const RichTextEditor = ({ editorValue, setEditorValue }) => {
 
   return (
     <div className={s.richTextEditor}>
-      <ReactQuill theme="snow" modules={modules} formats={formats} value={editorValue} onChange={handleEditorChange} />
+      <ReactQuill
+        theme="snow"
+        style={{ borderColor: 'red' }}
+        modules={modules}
+        formats={formats}
+        value={editorValue}
+        onChange={handleEditorChange}
+      />
     </div>
   );
 };
