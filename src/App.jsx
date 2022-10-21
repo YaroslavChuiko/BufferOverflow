@@ -1,6 +1,8 @@
 import { Route, Routes } from 'react-router-dom';
 import Home from './pages/Home/Home';
 import Login from './pages/Login/Login';
+import Post from './pages/Post/Post';
+import PostCreate from './pages/PostCreate/PostCreate';
 import Register from './pages/Register/Register';
 import PageLayout from './shared/PageLayout/PageLayout';
 import ProtectedRoute from './shared/ProtectedRoute/ProtectedRoute';
@@ -13,7 +15,14 @@ const App = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route element={<PageLayout />}>
+        <Route path="/create" element={<PostCreate />} /> //!
           <Route path="/" element={<Home />} />
+          <Route path="/post" >
+            <Route path=":postId" element={<Post />} />
+            <Route element={<ProtectedRoute />}>
+              <Route path="create" element={<PostCreate />} />
+            </Route>
+          </Route>
           <Route path="/questions" element={<div>questions</div>} />
           <Route element={<ProtectedRoute />}>
             <Route path="/profile" element={<div>profile</div>} />
