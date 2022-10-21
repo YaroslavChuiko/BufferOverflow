@@ -52,6 +52,8 @@ const Home = () => {
     setTab(val);
   };
 
+
+  //filter //! add many tags
   const [filter, setFilter] = useState('');
   const [getCategories, { data, isFetching }] = useLazyGetCategoriesQuery();
 
