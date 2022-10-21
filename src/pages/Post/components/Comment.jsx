@@ -49,7 +49,7 @@ const Comment = ({ comment }) => {
   }
 
   return (
-    <div className={`${s.comment} ${s.inactive}`}>
+    <div className={s.comment}>
       <span>{comment.content}</span>
       {isAuthorSuccess && (
         <div className={s.author}>
