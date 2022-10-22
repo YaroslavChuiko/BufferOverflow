@@ -24,7 +24,10 @@ export const validateBody = (body) => {
 }
 
 export const validateTags = (tags) => {
-
+  const MAX_LENGTH = 5;
+  if (!tags.length) return `Please enter at least one tag.`;
+  if (tags.length > MAX_LENGTH) return `Please enter no more than ${MAX_LENGTH} tags.`;
+  
   return '';
 }
 
