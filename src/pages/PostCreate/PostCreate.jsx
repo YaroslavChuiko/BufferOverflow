@@ -1,15 +1,18 @@
-import { Button, Divider, Input, Text, useToasts } from '@geist-ui/core';
+import { Button, Divider, Input, Text, useTheme, useToasts } from '@geist-ui/core';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import Container from '../../shared/Container/Container';
+import CustomMultiSelect from '../../shared/CustomMultiSelect/CustomMultiSelect';
 import RichTextEditor from '../../shared/RichTextEditor/RichTextEditor';
-import { useCreatePostMutation } from '../../store/api/apiSlice';
+import { useCreatePostMutation, useLazyGetCategoriesQuery } from '../../store/api/apiSlice';
 import { selectUser } from '../../store/selectors';
 import { validatePostData } from '../../validation/postValidation';
 
 import s from './PostCreate.module.scss';
 
 const PostCreate = () => {
+  const navigate = useNavigate();
   const { userData } = useSelector(selectUser);
   const { setToast } = useToasts();
 
@@ -19,48 +22,63 @@ const PostCreate = () => {
   const [body, setBody] = useState('');
   const [bodyMessage, setBodyMessage] = useState('');
 
+  const [tags, setTags] = useState([]);
+  const [tagsMessage, setTagsMessage] = useState('');
+
+  const [getCategories, { data, isFetching }] = useLazyGetCategoriesQuery();
   const [createPost, { isLoading, isSuccess }] = useCreatePostMutation();
 
   const handleTitleChange = (e) => {
     setTitle(e.target.value);
   };
-  
+
+  const handleTagsChange = (val) => {
+    console.log(val);
+    setTags(val);
+  };
+
+  const loadOptions = async (inputValue, callback) => {
+    const categories = await getCategories(inputValue).unwrap();
+    callback(categories);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const normalizedBody = body.replace(/<p><br><\/p>+/g, ''); //delete extra <p><br></p> substrs
 
-    const result = validatePostData(title, normalizedBody, '');
+    const result = validatePostData(title, normalizedBody, tags);
 
     setTitleMessage(result.title);
     setBodyMessage(result.body);
+    setTagsMessage(result.tags);
 
     if (!result.success) {
       return;
     }
 
-    setToast({
-      text: 'Success',
-      type: 'success',
-    });
+    // setToast({
+    //   text: 'Success',
+    //   type: 'success',
+    // });
 
-    // const newPost = {
-    //   author_id: userData.id,
-    //   title,
-    //   content: body,
-    //   post_categories: [],
-    //   status: 'active',
-    // };
+    const newPost = {
+      author_id: userData.id,
+      title,
+      content: body,
+      post_categories: tags.map(tag => tag.id),
+      status: 'active',
+    };
 
-    // try {
-    //   await createComment(newComment).unwrap();
-    //   // setEditorValue('');
-    // } catch (error) {
-    //   setToast({
-    //     text: error.message,
-    //     type: 'error',
-    //   });
-    // }
+    try {
+      const post = await createPost(newPost).unwrap();
+      // setEditorValue('');
+      navigate(`/post/${post.id}`)
+    } catch (error) {
+      setToast({
+        text: error.message,
+        type: 'error',
+      });
+    }
   };
 
   return (
@@ -73,6 +91,10 @@ const PostCreate = () => {
 
         <form className={s.form} onSubmit={handleSubmit}>
           <div className={s.formRow}>
+            <label className={s.label} htmlFor="title">
+              Title
+              <div className={s.description}>Be specific and imagine you’re asking a question to another person</div>
+            </label>
             <Input
               value={title}
               onChange={handleTitleChange}
@@ -82,13 +104,7 @@ const PostCreate = () => {
               htmlType="text"
               placeholder="e.g. Is there an R function for finding the index of an element in a vector?"
               width="100%"
-              mb="5px"
-            >
-              <label className={s.label} htmlFor="title">
-                Title
-                <div className={s.description}>Be specific and imagine you’re asking a question to another person</div>
-              </label>
-            </Input>
+            />
             {titleMessage && (
               <div className={s.validationMessage}>
                 <Text span type="error">
@@ -113,6 +129,26 @@ const PostCreate = () => {
             )}
 
             <div className={s.preview} dangerouslySetInnerHTML={{ __html: body }}></div>
+          </div>
+
+          <div className={s.formRow}>
+            <label className={s.label} htmlFor="tags">
+              Tags
+              <div className={s.description}>Add up to 5 tags to describe what your question is about</div>
+            </label>
+            <CustomMultiSelect
+              value={tags}
+              placeholder="e.g. (ios node.js mongodb)"
+              onChange={handleTagsChange}
+              loadOptions={loadOptions}
+            />
+            {tagsMessage && (
+              <div className={s.validationMessage}>
+                <Text span type="error">
+                  {tagsMessage}
+                </Text>
+              </div>
+            )}
           </div>
 
           <Button type="success-light" htmlType="submit">

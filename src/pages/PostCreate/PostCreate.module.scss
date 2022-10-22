@@ -33,6 +33,7 @@
 }
 
 .label {
+  margin-bottom: 5px;
   display: inline-block;
   color: $foreground-color;
   font-size: 16px;
@@ -48,6 +49,7 @@
 }
 
 .validationMessage {
+  margin: 5px 0;
   font-size: 14px;
 }
 
