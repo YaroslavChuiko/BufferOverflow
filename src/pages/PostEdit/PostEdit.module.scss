@@ -1,0 +1,60 @@
+@use '../../styles/variables' as *;
+
+.container {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 50px;
+}
+
+.header {
+  width: 100%;
+}
+
+.title {
+  font-size: 30px;
+  line-height: 1.3;
+  margin: 0 0 10px 0;
+}
+
+.form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding-top: 20px;
+}
+
+.formRow {
+  width: 100%;
+  margin-bottom: 40px;
+}
+
+.label {
+  display: block;
+  margin-bottom: 5px;
+  color: $foreground-color;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+
+  & .description {
+    color: $accent-7;
+    line-height: 1.2;
+    font-size: 14px;
+    font-weight: normal;
+  }
+}
+
+.validationMessage {
+  margin: 5px 0;
+  font-size: 14px;
+}
+
+.preview {
+  margin: 0 auto 40px;
+  max-width: 800px;
+  padding: 0px 30px;
+}
