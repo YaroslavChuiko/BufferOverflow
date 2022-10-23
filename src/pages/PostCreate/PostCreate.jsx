@@ -33,7 +33,6 @@ const PostCreate = () => {
   };
 
   const handleTagsChange = (val) => {
-    console.log(val);
     setTags(val);
   };
 
@@ -56,22 +55,16 @@ const PostCreate = () => {
       return;
     }
 
-    // setToast({
-    //   text: 'Success',
-    //   type: 'success',
-    // });
-
     const newPost = {
       author_id: userData.id,
       title,
-      content: body,
+      content: normalizedBody,
       post_categories: tags.map(tag => tag.id),
       status: 'active',
     };
 
     try {
       const post = await createPost(newPost).unwrap();
-      // setEditorValue('');
       navigate(`/post/${post.id}`)
     } catch (error) {
       setToast({
@@ -151,7 +144,7 @@ const PostCreate = () => {
             )}
           </div>
 
-          <Button type="success-light" htmlType="submit">
+          <Button loading={isLoading} type="success-light" htmlType="submit">
             Post your question
           </Button>
         </form>
