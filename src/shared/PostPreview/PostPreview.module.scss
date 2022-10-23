@@ -1,5 +1,6 @@
+@use '../../styles/variables' as *;
+
 .postPreview {
-  // margin-bottom: 10px !important;
   width: 100%;
 }
 
@@ -8,9 +9,8 @@
 }
 
 .titleLink {
-  color: #000;
+  color: $foreground-color;
   font-size: 22px;
-  // margin-bottom: 10px;
   
   &:hover {
     text-decoration: underline;
