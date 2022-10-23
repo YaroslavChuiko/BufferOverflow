@@ -4,13 +4,9 @@ import { useSelector } from 'react-redux';
 import RichTextEditor from '../../../shared/RichTextEditor/RichTextEditor';
 import { useUpdateAnswerMutation } from '../../../store/api/answerSlice';
 import { selectUser } from '../../../store/selectors';
+import { STATUS_OPTIONS } from '../../../utils/constants';
 import { validateLength } from '../../../validation/richTextValidation';
 import s from './AnswerEdit.module.scss';
-
-const options = [
-  { label: 'Active', value: 'active' },
-  { label: 'Inactive', value: 'inactive' },
-];
 
 const AnswerEdit = ({ answer, setIsEdit }) => {
   const { setToast } = useToasts();
@@ -69,7 +65,7 @@ const AnswerEdit = ({ answer, setIsEdit }) => {
           </Text>
         </div>
         <Select placeholder="Status..." value={statusValue} onChange={setStatusValue} mt="10px">
-          {options.map((option, index) => (
+          {STATUS_OPTIONS.map((option, index) => (
             <Select.Option key={index} value={option.value}>
               {option.label}
             </Select.Option>
