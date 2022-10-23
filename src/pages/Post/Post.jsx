@@ -1,10 +1,16 @@
-import { Avatar, Divider, Loading, Tag, Text } from '@geist-ui/core';
+import { Avatar, Divider, Loading, Tag, Text, useToasts } from '@geist-ui/core';
 import moment from 'moment';
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import { useNavigate, useParams } from 'react-router-dom';
 import Container from '../../shared/Container/Container';
 import Vote from '../../shared/Vote/Vote';
-import { useGetPostQuery, useLazyGetAuthorQuery, useLazyGetPostCategoriesQuery } from '../../store/api/apiSlice';
+import {
+  useDeletePostMutation,
+  useGetPostQuery,
+  useLazyGetAuthorQuery,
+  useLazyGetPostCategoriesQuery
+} from '../../store/api/apiSlice';
 import { selectUser } from '../../store/selectors';
 import capitalizeFirstLetter from '../../utils/capitalizeFirstLetter';
 import AnswerCreate from './components/AnswerCreate';
@@ -12,8 +18,10 @@ import AnswerList from './components/AnswerList';
 import s from './Post.module.scss';
 
 const Post = () => {
-  // const { postId } = useParams();
-  const postId = 1;
+  const { postId } = useParams();
+  const { setToast } = useToasts();
+  const navigate = useNavigate();
+  // const postId = 1;
   const { loggedIn, userData } = useSelector(selectUser);
 
   const {
@@ -27,6 +35,7 @@ const Post = () => {
   const [getPostAuthor, { data: author, isLoading: isAuthorLoading, isSuccess: isAuthorSuccess }] = useLazyGetAuthorQuery();
   const [getPostCategories, { data: categories, isLoading: isCategoriesLoading, isSuccess: isCategoriesSuccess }] =
     useLazyGetPostCategoriesQuery();
+  const [deletePost, { isLoading: isDeleteLoading, isSuccess: isDeleteSuccess }] = useDeletePostMutation();
 
   useEffect(() => {
     if (post?.author_id) {
@@ -42,12 +51,21 @@ const Post = () => {
 
   const handleEditClick = async (e) => {
     e.preventDefault();
-    // setIsEdit((prevVal) => !prevVal);
+    navigate('edit');
   };
 
   const handleDeleteClick = async (e) => {
     e.preventDefault();
-    // await deleteAnswer(answer.id);
+
+    try {
+      await deletePost(postId);
+      navigate('/');
+    } catch (error) {
+      setToast({
+        text: error.message,
+        type: 'error',
+      });
+    }
   };
 
   let actions;
@@ -106,10 +124,10 @@ const Post = () => {
         </div>
 
         <div className={s.container}>
-          <div className={s.content}>
-            <p>
+          <div className={s.content} dangerouslySetInnerHTML={{ __html: post.content }}>
+            {/* <p>
               {capitalizeFirstLetter(post.content)} {capitalizeFirstLetter(post.content)}
-            </p>
+            </p> */}
           </div>
 
           <div className={s.footer}>
