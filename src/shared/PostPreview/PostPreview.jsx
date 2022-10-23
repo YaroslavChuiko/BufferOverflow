@@ -3,6 +3,8 @@ import moment from 'moment';
 import { Link } from 'react-router-dom';
 import { useGetAuthorQuery, useGetPostCategoriesQuery } from '../../store/api/apiSlice';
 import capitalizeFirstLetter from '../../utils/capitalizeFirstLetter';
+import getText from '../../utils/getText';
+import truncate from '../../utils/truncate';
 import Vote from '../Vote/Vote';
 import s from './PostPreview.module.scss';
 
@@ -33,7 +35,7 @@ const PostPreview = ({ post }) => {
           {capitalizeFirstLetter(post.title)}
         </Link>
       </h3>
-      <p>{post.content}</p>
+      <p>{truncate(getText(post.content), 250)}</p>
       <div className={s.categories}>
         {isCategoriesSuccess &&
           categories.map((item) => (
