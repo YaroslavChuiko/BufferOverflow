@@ -1,8 +1,8 @@
 {
-  "name": "webpack-starters",
+  "name": "usof-frontend",
   "version": "1.0.0",
   "private": true,
-  "description": "Webpack starters for making new projects",
+  "description": "usof-frontend",
   "scripts": {
     "start": "cross-env SERVE=true webpack serve",
     "watch": "webpack --watch",
@@ -44,6 +44,7 @@
     "react-dom": "^18.1.0",
     "react-quill": "^2.0.0",
     "react-redux": "^8.0.4",
-    "react-router-dom": "^6.4.1"
+    "react-router-dom": "^6.4.1",
+    "react-select": "^5.5.4"
   }
 }
