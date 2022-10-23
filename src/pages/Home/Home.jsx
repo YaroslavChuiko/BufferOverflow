@@ -71,11 +71,10 @@ const Home = () => {
     <Container>
       <div className={s.home}>
         <div>
-          {/* <Description title="Questions" content="Data about this section." /> */}
           <Text h1 font="36px">
             Questions
           </Text>
-          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Non, praesentium.</p>
+          <p>Ask a question and get a quick answer.</p>
         </div>
 
         <div className={s.questions}>
