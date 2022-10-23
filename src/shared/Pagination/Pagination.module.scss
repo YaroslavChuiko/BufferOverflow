@@ -1,3 +1,5 @@
+@use '../../styles/variables' as *;
+
 .pagination {
   display: flex;
   align-items: center;
@@ -12,8 +14,8 @@
   align-items: center;
   justify-content: center;
   font-size: 14px;
-  background-color: #fff;
-  color: #0070f3;
+  background-color: $background-color;
+  color: $success;
   border: none;
   outline: none;
   border-radius: 6px;
@@ -29,29 +31,29 @@
   transition: all linear 200ms 0ms;
 
   &:hover {
-    background-color: rgba(0, 112, 243, 0.1);
+    background-color: rgba($success, 0.1);
   }
 
   &.active {
     font-weight: bold;
-    background-color: #0070f3;
-    color: #fff;
+    background-color: $success;
+    color: $background-color;
     box-shadow: 0 5px 10px rgb(0 0 0 / 12%);
 
     &:hover {
-      background-color: rgba(0, 112, 243, 0.8);
+      background-color: rgba($success, 0.8);
       box-shadow: 0 8px 30px rgb(0 0 0 / 12%);
     }
   }
 
   &:disabled {
-    color: #888;
-    background-color: #fff;
+    color: $accent-4;
+    background-color: $background-color;
     box-shadow: none;
     cursor: not-allowed;
 
     &:hover {
-      background-color: #eaeaea;
+      background-color: $accent-2;
     }
   }
 }
@@ -62,8 +64,8 @@
   justify-content: center;
   padding: 1px 6px;
   font-size: 18px;
-  background-color: #fff;
-  color: #0070f3;
+  background-color: $background-color;
+  color: $success;
   user-select: none;
   border-radius: 6px;
   height: 32px;
