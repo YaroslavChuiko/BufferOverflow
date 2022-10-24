@@ -4,11 +4,8 @@ import { useNavigate, useParams } from 'react-router-dom';
 import Container from '../../shared/Container/Container';
 import CustomMultiSelect from '../../shared/CustomMultiSelect/CustomMultiSelect';
 import RichTextEditor from '../../shared/RichTextEditor/RichTextEditor';
-import {
-  useGetPostQuery, useLazyGetCategoriesQuery,
-  useLazyGetPostCategoriesQuery,
-  useUpdatePostMutation
-} from '../../store/api/apiSlice';
+import { useLazyGetCategoriesQuery } from '../../store/api/apiSlice';
+import { useGetPostQuery, useLazyGetPostCategoriesQuery, useUpdatePostMutation } from '../../store/api/postSlice';
 import { STATUS_OPTIONS } from '../../utils/constants';
 import { validatePostData } from '../../validation/postValidation';
 

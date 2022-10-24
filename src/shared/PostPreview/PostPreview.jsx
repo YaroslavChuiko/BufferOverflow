@@ -1,7 +1,8 @@
 import { Avatar, Card, Tag, Text } from '@geist-ui/core';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
-import { useGetAuthorQuery, useGetPostCategoriesQuery } from '../../store/api/apiSlice';
+import { useGetAuthorQuery } from '../../store/api/apiSlice';
+import { useGetPostCategoriesQuery } from '../../store/api/postSlice';
 import capitalizeFirstLetter from '../../utils/capitalizeFirstLetter';
 import getText from '../../utils/getText';
 import truncate from '../../utils/truncate';
@@ -45,7 +46,7 @@ const PostPreview = ({ post }) => {
           ))}
       </div>
       <div className={s.footer}>
-        <div className={s.info}>
+        <div className={s.footerLeft}>
           <div className={s.author}>
             by
             {isAuthorSuccess && (
@@ -62,9 +63,17 @@ const PostPreview = ({ post }) => {
             {moment(post.publish_date).fromNow()}
           </div>
         </div>
-        <div className={s.rating}>
+        <div className={s.footerRight}>
+          {post.status === 'inactive' && (
+            <Tag type="warning" scale={0.7} font="14px" mr="15px">
+              Status: Inactive
+            </Tag>
+          )}
           <Vote postId={post.id} voteCount={post.rating} />
         </div>
+        {/* <div className={s.rating}>
+          <Vote postId={post.id} voteCount={post.rating} />
+        </div> */}
       </div>
     </Card>
   );

@@ -5,12 +5,8 @@ import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import Container from '../../shared/Container/Container';
 import Vote from '../../shared/Vote/Vote';
-import {
-  useDeletePostMutation,
-  useGetPostQuery,
-  useLazyGetAuthorQuery,
-  useLazyGetPostCategoriesQuery
-} from '../../store/api/apiSlice';
+import { useLazyGetAuthorQuery } from '../../store/api/apiSlice';
+import { useDeletePostMutation, useGetPostQuery, useLazyGetPostCategoriesQuery } from '../../store/api/postSlice';
 import { selectUser } from '../../store/selectors';
 import capitalizeFirstLetter from '../../utils/capitalizeFirstLetter';
 import AnswerCreate from './components/AnswerCreate';

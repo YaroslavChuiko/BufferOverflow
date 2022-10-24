@@ -5,7 +5,8 @@ import { useNavigate } from 'react-router-dom';
 import Container from '../../shared/Container/Container';
 import CustomMultiSelect from '../../shared/CustomMultiSelect/CustomMultiSelect';
 import RichTextEditor from '../../shared/RichTextEditor/RichTextEditor';
-import { useCreatePostMutation, useLazyGetCategoriesQuery } from '../../store/api/apiSlice';
+import { useLazyGetCategoriesQuery } from '../../store/api/apiSlice';
+import { useCreatePostMutation } from '../../store/api/postSlice';
 import { selectUser } from '../../store/selectors';
 import { validatePostData } from '../../validation/postValidation';
 

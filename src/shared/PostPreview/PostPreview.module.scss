@@ -27,10 +27,15 @@
   justify-content: space-between;
 }
 
-.info {
+.footerLeft {
   display: flex;
   align-items: center;
   font-size: 14px;
+}
+
+.footerRight {
+  display: flex;
+  align-items: center;
 }
 
 .author {
