@@ -1,0 +1,91 @@
+@use '../../styles/variables' as *;
+
+.profile {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 50px;
+}
+
+.user {
+  display: flex;
+  align-items: flex-start;
+}
+
+.avatar {
+  width: 154px;
+  height: 154px;
+  overflow: hidden;
+  border-radius: 6px;
+  border: 1px solid $accent-2;
+  
+  & .avatarImg {
+    display: inline-block;
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.info {
+  margin-left: 16px;
+
+  & .fullName {
+    font-size: 34px;
+    font-weight: bold;
+    margin: 0;
+  }
+
+  & .login,
+  .email,
+  .rating {
+    font-size: 16px;
+    margin: 5px 0 0 5px;
+
+    & .label {
+      font-weight: bold;
+      margin-right: 10px;
+    }
+  }
+
+  & .rating {
+    & .positive {
+      color: $cyan-dark;
+    }
+
+    & .negative {
+      color: $error;
+    }
+  }
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+
+.questions {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.questioinsContent {
+  width: 70%;
+}
+
+.questionsFilter {
+  position: sticky;
+  top: 80px;
+  width: calc(30% - 15px);
+  margin-top: 56px;
+  padding: 26px;
+
+  background: $background-color;
+  border-radius: 6px;
+  border: 1px solid $accent-2;
+  box-shadow: none;
+  transition: all 0.2s ease;
+}
