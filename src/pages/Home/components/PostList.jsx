@@ -1,17 +1,18 @@
-import { Loading } from '@geist-ui/core';
+import { Button, Loading } from '@geist-ui/core';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import Pagination from '../../../shared/Pagination/Pagination';
 import PostPreview from '../../../shared/PostPreview/PostPreview';
 import SelectPageSize from '../../../shared/SelectPageSize/SelectPageSize';
-import { useGetPostsQuery } from '../../../store/api/apiSlice';
+import { useGetPostsQuery } from '../../../store/api/postSlice';
 import { selectUser } from '../../../store/selectors';
 
 import s from './PostList.module.scss';
 
 const PostList = ({ params, filter }) => {
   let [searchParams, setSearchParams] = useSearchParams();
+  const navigate = useNavigate();
   const [page, setPage] = useState(1);
   const { pageSize } = useSelector(selectUser);
 
@@ -24,7 +25,10 @@ const PostList = ({ params, filter }) => {
   const param = new URLSearchParams();
   param.append('_start', String(pageSize * page - pageSize));
   param.append('_end', String(pageSize * page));
-  param.append('post_categories', filter);
+
+  if (filter) {
+    param.append('post_categories', filter);
+  }
   // post_categories=1,
   for (const key in params) {
     param.append(key, params[key]);
@@ -46,9 +50,17 @@ const PostList = ({ params, filter }) => {
   return (
     <div className={s.postList}>
       <div className={s.container}>
-        {data?.posts.map((post) => (
+        {data?.totalCount ? (
+          data?.posts.map((post) => <PostPreview key={post.id} post={post} />)
+        ) : (
+          <div className={s.noResult}>
+            <div className={s.text}>No results found :(</div>
+            <Button type="success-light" onClick={(e) => navigate('/post/create')}>Ask question</Button>
+          </div>
+        )}
+        {/* {data?.posts.map((post) => (
           <PostPreview key={post.id} post={post} />
-        ))}
+        ))} */}
       </div>
       <div className={s.pageControls}>
         <Pagination count={Math.ceil(data.totalCount / pageSize)} limit={5} page={page} onChange={handlePageChange} />
