@@ -1,14 +1,7 @@
+@use '../../styles/variables' as *;
+
 .home {
-  // margin-top: 25px;
-  // padding: 40px;
-  // border-radius: 6px;
-  // height: 2000px;
-  background-color: #fff;
-  // box-shadow: 0 0 15px 0 rgb(0 0 0 / 10%);
-  // box-shadow: 0 5px 10px rgb(0 0 0 / 12%);
-  // box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
-  // box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px;
-  // box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 15px 0px;
+  background-color: $background-color;
 }
 
 .questions {
@@ -25,15 +18,12 @@
   position: sticky;
   top: 80px;
   width: calc(30% - 15px);
-  // height: 300px;
   margin-top: 56px;
   padding: 26px;
 
-  background: #fff;
+  background: $background-color;
   border-radius: 6px;
-  border: 1px solid #eaeaea;
+  border: 1px solid $accent-2;
   box-shadow: none;
-  // width: auto;
-  // height: auto;
   transition: all 0.2s ease;
 }
