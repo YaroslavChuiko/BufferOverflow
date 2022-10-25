@@ -63,6 +63,11 @@ const Profile = () => {
     setFilter(category.id);
   };
 
+  const handleEditClick = (e) => {
+    e.preventDefault();
+    navigate('edit');
+  }
+
   const handleDeleteClick = async (e) => {
     e.preventDefault();
 
@@ -103,7 +108,7 @@ const Profile = () => {
         </div>
 
         <div className={s.actions}>
-          <Button icon={<Settings />} type="success-light" mb="15px">
+          <Button icon={<Settings />} onClick={handleEditClick} type="success-light" mb="15px">
             Edit profile
           </Button>
           <Button loading={isLoading} onClick={handleDeleteClick} icon={<UserX />} type="error" ghost>
