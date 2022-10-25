@@ -1,0 +1,24 @@
+@use '../../../styles/variables' as *;
+
+.form {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.row {
+  margin-bottom: 20px;
+}
+
+.label {
+  font-size: 16px;
+  font-weight: bold;
+  color: $accent-6;
+  margin-bottom: 5px;
+}
+
+.validationMessage {
+  margin: 5px 0;
+  font-size: 14px;
+}
