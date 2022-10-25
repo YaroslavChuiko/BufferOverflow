@@ -44,3 +44,19 @@ export const comparePasswords = (password, repassword) => {
 
   return '';
 }
+
+export const validateDataToUpdate = (firstName, lastName, login) => {
+  const result = {
+    success: true,
+    firstName: validateName(firstName),
+    lastName: validateName(lastName),
+    login: validateLogin(login),
+  };
+
+  if (result.firstName || result.lastName || result.login) {
+    result.success = false;
+  }
+
+  return result;
+};
+
