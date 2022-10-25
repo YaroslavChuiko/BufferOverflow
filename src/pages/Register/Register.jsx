@@ -2,7 +2,7 @@ import { Button, Dot, Input, Text, useToasts } from '@geist-ui/core';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import api from '../../lib/axios';
-import { comparePasswords, validateEmail, validateLogin, validateName, validatePassword } from '../../validation/authValidation';
+import { comparePasswords, validateEmail, validateLogin, validateName, validatePassword } from '../../validation/userValidation';
 import s from './Register.module.scss';
 
 const Register = () => {
