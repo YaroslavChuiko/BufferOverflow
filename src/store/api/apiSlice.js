@@ -14,6 +14,20 @@ export const apiSlice = createApi({
         return categories.map((item) => ({ id: item.id, label: item.title, value: item.title }));
       },
     }),
+    updateUserData: builder.mutation({
+      query: ({id, login, full_name, profile_picture, role}) => ({
+        url: `/users/${id}`,
+        method: 'PUT',
+        body: {login, full_name, profile_picture, role},
+      }),
+    }),
+    updateUserAvatar: builder.mutation({
+      query: (body) => ({
+        url: `/users/avatar`,
+        method: 'PATCH',
+        body: body,
+      }),
+    }),
     deleteUser: builder.mutation({
       query: (userId) => ({
         url: `/users/${userId}`,
@@ -30,5 +44,7 @@ export const {
   useGetAuthorQuery,
   useLazyGetAuthorQuery,
   useLazyGetCategoriesQuery,
+  useUpdateUserAvatarMutation,
+  useUpdateUserDataMutation,
   useDeleteUserMutation,
 } = apiSlice;
