@@ -5,6 +5,7 @@ import Post from './pages/Post/Post';
 import PostCreate from './pages/PostCreate/PostCreate';
 import PostEdit from './pages/PostEdit/PostEdit';
 import Profile from './pages/Profile/Profile';
+import ProfileEdit from './pages/ProfileEdit/ProfileEdit';
 import Register from './pages/Register/Register';
 import PageLayout from './shared/PageLayout/PageLayout';
 import ProtectedRoute from './shared/ProtectedRoute/ProtectedRoute';
@@ -20,6 +21,8 @@ const App = () => {
 
           <Route path="/create" element={<PostCreate />} /> //!
           <Route path="edit" element={<PostEdit />} />
+          <Route path="profileEdit" element={<ProfileEdit />} />
+
           
           <Route path="/" element={<Home />} />
           <Route path="/post">
@@ -34,6 +37,7 @@ const App = () => {
           <Route path="/questions" element={<div>questions</div>} />
           <Route element={<ProtectedRoute />}>
             <Route path="/profile" element={<Profile />} />
+            <Route path="/profile/edit" element={<ProfileEdit />} />
           </Route>
         </Route>
       </Routes>
