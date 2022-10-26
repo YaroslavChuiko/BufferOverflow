@@ -15,10 +15,10 @@ export const apiSlice = createApi({
       },
     }),
     updateUserData: builder.mutation({
-      query: ({id, login, full_name, profile_picture, role}) => ({
+      query: ({ id, login, full_name, profile_picture, role }) => ({
         url: `/users/${id}`,
         method: 'PUT',
-        body: {login, full_name, profile_picture, role},
+        body: { login, full_name, profile_picture, role },
       }),
     }),
     updateUserAvatar: builder.mutation({
@@ -35,6 +35,13 @@ export const apiSlice = createApi({
         body: {},
       }),
     }),
+    resetPassword: builder.mutation({
+      query: ({ email }) => ({
+        url: `/auth/password-reset`,
+        method: 'POST',
+        body: { email },
+      }),
+    }),
   }),
 });
 
@@ -47,4 +54,5 @@ export const {
   useUpdateUserAvatarMutation,
   useUpdateUserDataMutation,
   useDeleteUserMutation,
+  useResetPasswordMutation,
 } = apiSlice;
