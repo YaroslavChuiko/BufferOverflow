@@ -5,12 +5,15 @@ import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import api from '../../lib/axios';
 import { userSlice } from '../../store/slices/userSlice';
+import ResetPassword from './components/ResetPassword';
 import s from './Login.module.scss';
 
 const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { setToast } = useToasts();
+  const [isModalActive, setIsModalActive] = useState(false);
+
   const [loading, setLoading] = useState(false);
   const initialInputStatus = { type: '', message: '', showNotify: false, notifyType: '' };
 
@@ -24,11 +27,16 @@ const Login = () => {
     setLogin(e.target.value);
     setLoginStatus((prevVal) => ({ ...prevVal, type: '' }));
   };
-  
+
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
     setPasswordStatus((prevVal) => ({ ...prevVal, type: '' }));
   };
+
+  const showModal = (e) => {
+    e.preventDefault()
+    setIsModalActive(true);
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -40,19 +48,13 @@ const Login = () => {
       setLoading(false);
 
       if (!response.data.success) {
-        // const inputStatus = {
-        //   type: response.data.success ? '' : 'error',
-        //   message: response.data.message,
-        //   showNotify: !response.data.success,
-        //   notifyType: response.data.success ? '' : 'error',
-        // };
         const inputStatus = {
           type: 'error',
           message: response.data.message,
           showNotify: !response.data.success,
           notifyType: 'error',
         };
-  
+
         setLoginStatus(inputStatus);
         setPasswordStatus(inputStatus);
       } else {
@@ -72,7 +74,7 @@ const Login = () => {
 
   const notyfication = (showNotify, notifyType, message) => (
     <span className={showNotify ? '' : s.hide}>
-      <Dot type={notifyType} scale={0.5}/>
+      <Dot type={notifyType} scale={0.5} />
       <Text small type={notifyType}>
         {message}
       </Text>
@@ -83,9 +85,7 @@ const Login = () => {
     <div className={s.wrapper}>
       <div className={s.container}>
         <div className={s.logo}>
-          <Link to={'/'}>
-            Logo
-          </Link>
+          <Link to={'/'}>Logo</Link>
         </div>
         <div className={s.content}>
           <Text h2 font="22px" className={s.title}>
@@ -93,20 +93,17 @@ const Login = () => {
           </Text>
           <form className={s.form} onSubmit={handleSubmit}>
             <Input
-              id="login"
-              name="login"
-              icon={<User color={loginStatus.type ? 'red' : ''} />}
-              type={loginStatus.type ? 'error' : 'default'}
-              scale={1.1}
-              placeholder="Login"
               value={login}
               onChange={handleLoginChange}
+              type={loginStatus.type ? 'error' : 'default'}
+              icon={<User color={loginStatus.type ? 'red' : ''} />}
+              id="login"
+              name="login"
+              scale={1.1}
+              placeholder="Login"
               mb="15px"
               w="100%"
             >
-              {/* <Text b font="14px" ml="5px">
-                Login
-              </Text> */}
               <label htmlFor="login" className={s.label}>
                 Login
               </label>
@@ -114,19 +111,16 @@ const Login = () => {
             </Input>
 
             <Input.Password
-              id="password"
-              name="password"
-              icon={<Lock color={passwordStatus.type ? 'red' : ''} />}
-              type={passwordStatus.type ? 'error' : 'default'}
-              scale={1.1}
-              placeholder="Password"
               value={password}
               onChange={handlePasswordChange}
+              type={passwordStatus.type ? 'error' : 'default'}
+              icon={<Lock color={passwordStatus.type ? 'red' : ''} />}
+              id="password"
+              name="password"
+              scale={1.1}
+              placeholder="Password"
               w="100%"
             >
-              {/* <Text b font="14px" ml="5px">
-                Password
-              </Text> */}
               <label htmlFor="password" className={s.label}>
                 Password
               </label>
@@ -138,14 +132,18 @@ const Login = () => {
             </Button>
           </form>
 
-          <Text span type="secondary">
-            Don't have an account yeat?{' '}
-            <Link className={s.registerLink} to="/register" >
-              Sign up
-            </Link>
-          </Text>
+          <div className={s.footer}>
+            <div className={s.register}>
+              Don't have an account yeat?{' '}
+              <Link className={s.registerLink} to="/register">
+                Sign up
+              </Link>
+            </div>
+            <a href='#' onClick={showModal}>Forget a password?</a>
+          </div>
         </div>
       </div>
+      <ResetPassword visible={isModalActive} onClose={() => setIsModalActive(false)} />
     </div>
   );
 };
