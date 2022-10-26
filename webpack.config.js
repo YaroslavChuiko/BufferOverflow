@@ -44,6 +44,7 @@ module.exports = {
   entry: './src/index.js',
 
   output: {
+    publicPath: "/", //Without publicPath resources might not be loaded properly /article/uuid, only index.html.
     filename: './static/js/[name].bundle.js',
     // output path is required for `clean-webpack-plugin`
     path: path.resolve(__dirname, 'dist'),
