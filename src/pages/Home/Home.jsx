@@ -3,9 +3,9 @@ import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useSearchParams } from 'react-router-dom';
 import Container from '../../shared/Container/Container';
+import PostList from '../../shared/PostList/PostList';
 import { useGetCategoriesQuery, useLazyGetCategoriesQuery } from '../../store/api/apiSlice';
 import { selectUser } from '../../store/selectors';
-import PostList from './components/PostList';
 
 import s from './Home.module.scss';
 
@@ -34,18 +34,8 @@ const Home = () => {
     },
   };
 
-  //! create component Questions || Posts
-
   const [tab, setTab] = useState(JSON.parse(sessionStorage.getItem('questionsActiveTab')) || tabs[0]);
   const { pageSize } = useSelector(selectUser);
-  // let [searchParams, setSearchParams] = useSearchParams();
-
-  // useEffect(() => {
-  //   setSearchParams({
-  //     sort: tab,
-  //     page: 1,
-  //   });
-  // }, [tab, pageSize]);
 
   const handleTabChange = (val) => {
     sessionStorage.setItem('questionsActiveTab', JSON.stringify(val));
@@ -97,28 +87,6 @@ const Home = () => {
               placeholder="Enter here"
               w="100%"
             />
-
-            {/* <Select
-              placeholder="Tags"
-              multiple
-              pure={true}
-              w="100%"
-              initialValue={['1', '3', '4', '6']}
-              onClick={(e) => {
-                e.preventDefault();
-              }}
-              type="secondary"
-            >
-              <Select.Option value="1">React</Select.Option>
-              <Select.Option value="2">Angular</Select.Option>
-              <Select.Option value="3">Vue</Select.Option>
-              <Select.Option divider />
-              <Select.Option value="4">Rails</Select.Option>
-              <Select.Option value="5">Sinatra</Select.Option>
-              <Select.Option divider />
-              <Select.Option value="6">Express</Select.Option>
-              <Select.Option value="7">Koa</Select.Option>
-            </Select> */}
           </div>
         </div>
       </div>
