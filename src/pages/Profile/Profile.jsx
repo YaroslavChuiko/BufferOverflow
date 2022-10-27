@@ -4,10 +4,10 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import Container from '../../shared/Container/Container';
+import PostList from '../../shared/PostList/PostList';
 import { useDeleteUserMutation, useLazyGetCategoriesQuery } from '../../store/api/apiSlice';
 import { selectUser } from '../../store/selectors';
 import { logOut } from '../../store/thunks/userThunk';
-import PostList from '../Home/components/PostList';
 
 import s from './Profile.module.scss';
 
