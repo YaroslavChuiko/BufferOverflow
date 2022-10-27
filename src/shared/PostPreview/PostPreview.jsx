@@ -52,7 +52,7 @@ const PostPreview = ({ post }) => {
             {isAuthorSuccess && (
               <>
                 <Avatar src={`${process.env.REACT_APP_GET_IMG_BASEURL}${author?.profile_picture}`} ml="5px" mr="5px" />
-                <Text span type="success">
+                <Text span type="success" title={`rating: ${author.rating}`}>
                   {author.login}
                 </Text>
               </>
