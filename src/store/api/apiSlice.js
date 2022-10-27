@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 export const apiSlice = createApi({
   reducerPath: 'api',
   baseQuery: fetchBaseQuery({ baseUrl: process.env.REACT_APP_API_URL }),
-  tagTypes: ['Post', 'Answer', 'Comment'],
+  tagTypes: ['Post', 'Answer', 'Comment', 'Like'],
   endpoints: (builder) => ({
     getAuthor: builder.query({
       query: (userId) => `/users/${userId}`,
@@ -28,6 +28,28 @@ export const apiSlice = createApi({
         body: body,
       }),
     }),
+    register: builder.mutation({
+      query: ({ login, firstName, lastName, email, password, repassword }) => ({
+        url: `/auth/register`,
+        method: 'POST',
+        body: { login, firstName, lastName, email, password, repassword },
+      }),
+    }),
+    login: builder.mutation({
+      query: ({ login, password }) => ({
+        url: `/auth/login`,
+        method: 'POST',
+        body: { login, password },
+      }),
+    }),
+    // logout: builder.mutation({
+    //   query: () => ({
+    //     url: `/auth/logout`,
+    //     method: 'POST',
+    //     body: {},
+    //   }),
+    //   invalidatesTags: ['Post', 'Answer', 'Comment', 'Like'],
+    // }),
     deleteUser: builder.mutation({
       query: (userId) => ({
         url: `/users/${userId}`,
@@ -40,6 +62,13 @@ export const apiSlice = createApi({
         url: `/auth/password-reset`,
         method: 'POST',
         body: { email },
+      }),
+    }),
+    confirmResetPassword: builder.mutation({
+      query: ({ token, newPassword }) => ({
+        url: `/auth/password-reset/${token}`,
+        method: 'POST',
+        body: { newPassword },
       }),
     }),
   }),
@@ -55,4 +84,8 @@ export const {
   useUpdateUserDataMutation,
   useDeleteUserMutation,
   useResetPasswordMutation,
+  useConfirmResetPasswordMutation,
+  useRegisterMutation,
+  useLoginMutation,
+  // useLogoutMutation,
 } = apiSlice;
