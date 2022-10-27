@@ -7,6 +7,7 @@ import PostEdit from './pages/PostEdit/PostEdit';
 import Profile from './pages/Profile/Profile';
 import ProfileEdit from './pages/ProfileEdit/ProfileEdit';
 import Register from './pages/Register/Register';
+import ResetPassword from './pages/ResetPassword/ResetPassword';
 import PageLayout from './shared/PageLayout/PageLayout';
 import ProtectedRoute from './shared/ProtectedRoute/ProtectedRoute';
 import './styles/index.scss';
@@ -15,25 +16,19 @@ const App = () => {
   return (
     <>
       <Routes>
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
         <Route element={<PageLayout />}>
+          <Route path="/register" element={<Register />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/reset-password/:token" element={<ResetPassword />} />
 
-          <Route path="/create" element={<PostCreate />} /> //!
-          <Route path="edit" element={<PostEdit />} />
-          <Route path="profileEdit" element={<ProfileEdit />} />
-
-          
           <Route path="/" element={<Home />} />
-          <Route path="/post">
-            <Route path=":postId" element={<Post />} />
-            <Route element={<ProtectedRoute />}>
-              <Route path=":postId/edit" element={<PostEdit />} />
-            </Route>
-            <Route element={<ProtectedRoute />}>
-              <Route path="create" element={<PostCreate />} />
-            </Route>
+
+          <Route path="/post/:postId" element={<Post />} />
+          <Route element={<ProtectedRoute />}>
+            <Route path="/post/:postId/edit" element={<PostEdit />} />
+            <Route path="/post/create" element={<PostCreate />} />
           </Route>
+
           <Route path="/questions" element={<div>questions</div>} />
           <Route element={<ProtectedRoute />}>
             <Route path="/profile" element={<Profile />} />
