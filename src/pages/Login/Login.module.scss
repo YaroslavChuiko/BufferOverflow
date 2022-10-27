@@ -2,7 +2,8 @@
 
 .wrapper {
   width: 100%;
-  min-height: 100vh;
+  margin-top: 64px;
+  min-height: calc(100vh - 64px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -21,9 +22,9 @@
   flex-direction: column;
 }
 
-.logo {
-  margin-bottom: 40px;
-}
+// .logo {
+//   margin-bottom: 40px;
+// }
 
 .content {
   width: 100%;
@@ -39,6 +40,8 @@
 }
 
 .title {
+  font-size: 22px;
+  text-align: center;
   width: 100%;
   margin: 0 0 40px 0;
 }

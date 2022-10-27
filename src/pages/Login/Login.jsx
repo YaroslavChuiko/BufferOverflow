@@ -3,7 +3,7 @@ import { Lock, User } from '@geist-ui/icons';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
-import api from '../../lib/axios';
+import { useLoginMutation } from '../../store/api/apiSlice';
 import { userSlice } from '../../store/slices/userSlice';
 import ResetPassword from './components/ResetPassword';
 import s from './Login.module.scss';
@@ -14,56 +14,44 @@ const Login = () => {
   const { setToast } = useToasts();
   const [isModalActive, setIsModalActive] = useState(false);
 
-  const [loading, setLoading] = useState(false);
-  const initialInputStatus = { type: '', message: '', showNotify: false, notifyType: '' };
-
   const [login, setLogin] = useState('');
-  const [loginStatus, setLoginStatus] = useState(initialInputStatus);
+  const [loginMessage, setLoginMessage] = useState('');
 
   const [password, setPassword] = useState('');
-  const [passwordStatus, setPasswordStatus] = useState(initialInputStatus);
+  const [passwordMessage, setPasswordMessage] = useState('');
+
+  const [loginUser, { isLoading }] = useLoginMutation();
 
   const handleLoginChange = (e) => {
     setLogin(e.target.value);
-    setLoginStatus((prevVal) => ({ ...prevVal, type: '' }));
+    setLoginMessage('');
   };
 
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
-    setPasswordStatus((prevVal) => ({ ...prevVal, type: '' }));
+    setPasswordMessage('');
   };
 
   const showModal = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     setIsModalActive(true);
-  }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const data = { login, password };
 
     try {
-      setLoading(true);
-      const response = await api.post('auth/login', data);
-      setLoading(false);
+      const response = await loginUser(data).unwrap();
 
-      if (!response.data.success) {
-        const inputStatus = {
-          type: 'error',
-          message: response.data.message,
-          showNotify: !response.data.success,
-          notifyType: 'error',
-        };
-
-        setLoginStatus(inputStatus);
-        setPasswordStatus(inputStatus);
-      } else {
-        //save user data to store
-        dispatch(userSlice.actions.setUser(response.data.user));
-        navigate(-1);
+      if (!response.success) {
+        setLoginMessage(response.message);
+        setPasswordMessage(response.message);
+        return;
       }
+      dispatch(userSlice.actions.setUser(response.user));
+      navigate(-1);
     } catch (error) {
-      setLoading(false);
       setToast({
         text: error.message,
         type: 'error',
@@ -72,31 +60,32 @@ const Login = () => {
     }
   };
 
-  const notyfication = (showNotify, notifyType, message) => (
-    <span className={showNotify ? '' : s.hide}>
-      <Dot type={notifyType} scale={0.5} />
-      <Text small type={notifyType}>
-        {message}
-      </Text>
-    </span>
-  );
+  const notyfication = (message) => {
+    if (!message) {
+      return;
+    }
+
+    return (
+      <>
+        <Dot type="error" scale={0.5} />
+        <Text small type="error">
+          {message}
+        </Text>
+      </>
+    );
+  };
 
   return (
     <div className={s.wrapper}>
       <div className={s.container}>
-        <div className={s.logo}>
-          <Link to={'/'}>Logo</Link>
-        </div>
         <div className={s.content}>
-          <Text h2 font="22px" className={s.title}>
-            Log in to your account
-          </Text>
+          <h1 className={s.title}>Log in to your account</h1>
           <form className={s.form} onSubmit={handleSubmit}>
             <Input
               value={login}
               onChange={handleLoginChange}
-              type={loginStatus.type ? 'error' : 'default'}
-              icon={<User color={loginStatus.type ? 'red' : ''} />}
+              type={loginMessage ? 'error' : 'default'}
+              icon={<User color={loginMessage ? 'red' : ''} />}
               id="login"
               name="login"
               scale={1.1}
@@ -107,14 +96,14 @@ const Login = () => {
               <label htmlFor="login" className={s.label}>
                 Login
               </label>
-              {notyfication(loginStatus.showNotify, loginStatus.notifyType, loginStatus.message)}
+              {notyfication(loginMessage)}
             </Input>
 
             <Input.Password
               value={password}
               onChange={handlePasswordChange}
-              type={passwordStatus.type ? 'error' : 'default'}
-              icon={<Lock color={passwordStatus.type ? 'red' : ''} />}
+              type={passwordMessage ? 'error' : 'default'}
+              icon={<Lock color={passwordMessage ? 'red' : ''} />}
               id="password"
               name="password"
               scale={1.1}
@@ -124,10 +113,10 @@ const Login = () => {
               <label htmlFor="password" className={s.label}>
                 Password
               </label>
-              {notyfication(passwordStatus.showNotify, passwordStatus.notifyType, passwordStatus.message)}
+              {notyfication(passwordMessage)}
             </Input.Password>
 
-            <Button loading={loading} type="secondary-light" htmlType="submit" mt="30px" w="100%">
+            <Button loading={isLoading} type="secondary-light" htmlType="submit" mt="30px" w="100%">
               Log in
             </Button>
           </form>
@@ -139,7 +128,9 @@ const Login = () => {
                 Sign up
               </Link>
             </div>
-            <a href='#' onClick={showModal}>Forget a password?</a>
+            <a href="#" onClick={showModal}>
+              Forget your password?
+            </a>
           </div>
         </div>
       </div>
