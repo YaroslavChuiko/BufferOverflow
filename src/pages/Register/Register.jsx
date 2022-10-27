@@ -1,65 +1,82 @@
 import { Button, Dot, Input, Text, useToasts } from '@geist-ui/core';
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
-import api from '../../lib/axios';
+import { useLoginMutation, useRegisterMutation } from '../../store/api/apiSlice';
+import { userSlice } from '../../store/slices/userSlice';
 import { comparePasswords, validateEmail, validateLogin, validateName, validatePassword } from '../../validation/userValidation';
 import s from './Register.module.scss';
 
 const Register = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const { setToast } = useToasts();
-  const [loading, setLoading] = useState(false);
-  const initialInputStatus = { type: '', message: '', showNotify: false, notifyType: '' };
 
   const [login, setLogin] = useState('');
-  const [loginStatus, setLoginStatus] = useState(initialInputStatus);
+  const [loginMessage, setLoginMessage] = useState('');
 
   const [firstName, setFirstName] = useState('');
-  const [firstNameStatus, setFirstNameStatus] = useState(initialInputStatus);
+  const [firstNameMessage, setFirstNameMessage] = useState('');
 
   const [lastName, setLastName] = useState('');
-  const [lastNameStatus, setLastNameStatus] = useState(initialInputStatus);
+  const [lastNameMessage, setLastNameMessage] = useState('');
 
   const [email, setEmail] = useState('');
-  const [emailStatus, setEmailStatus] = useState(initialInputStatus);
+  const [emailMessage, setEmailMessage] = useState('');
 
   const [password, setPassword] = useState('');
-  const [passwordStatus, setPasswordStatus] = useState(initialInputStatus);
+  const [passwordMessage, setPasswordMessage] = useState('');
 
   const [repassword, setRepassword] = useState('');
-  const [repasswordStatus, setRepasswordStatus] = useState(initialInputStatus);
+  const [repasswordMessage, setRepasswordMessage] = useState('');
 
-  const handleInputChange = (e, setInputValue, validateValue, setInputStatus) => {
+  const [registerUser, { isLoading: isRegisterLoading }] = useRegisterMutation();
+  const [loginUser, { isLoading: isLoginLoading }] = useLoginMutation();
+
+  const handleInputChange = (e, setInputValue, validateValue, setInputMessage) => {
     const value = e.target.value;
     setInputValue(value);
-    const inputErrorMsg = validateValue(value);
-    if (inputErrorMsg) {
-      setInputStatus({ type: 'error', message: inputErrorMsg, showNotify: true, notifyType: 'error' });
-    } else {
-      setInputStatus({ type: 'success', message: 'Successfully', showNotify: true, notifyType: 'success' });
-    }
+    setInputMessage(validateValue(value));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const data = { login, firstName, lastName, email, password, repassword };
 
-    try {
-      setLoading(true);
-      const registerRes = await api.post('auth/register', data);
+    //!validate all fileds
 
-      if (!registerRes.data.success) {
-        showErrors(registerRes.data.errors);
-        setToast({ text: registerRes.data.message, type: 'error' });
-      } else {
-        setToast({ text: registerRes.data.message, type: 'success', delay: 4000 });
-        const loginRes = await api.post('auth/login', { login, password });
-        //save user data to store
-        navigate('/', { replace: true });
+    try {
+      const registerRes = await registerUser(data).unwrap();
+
+      if (!registerRes.success) {
+        showErrors(registerRes.errors);
+        return;
       }
-      setLoading(false);
+
+      setToast({ text: registerRes.message, type: 'success', delay: 4000 });
     } catch (error) {
-      setLoading(false);
+      setToast({
+        text: error.message,
+        type: 'error',
+      });
+      console.error(error);
+    }
+
+    try {
+      const loginRes = await loginUser({ login, password }).unwrap();
+
+      if (!loginRes.success) {
+        setToast({
+          text: 'Login error',
+          type: 'error',
+          delay: 3000,
+        });
+        return;
+      }
+
+      dispatch(userSlice.actions.setUser(loginRes.user));
+      navigate('/', { replace: true });
+    } catch (error) {
       setToast({
         text: error.message,
         type: 'error',
@@ -70,159 +87,160 @@ const Register = () => {
 
   const showErrors = ({ login, firstName, lastName, email, password, repassword }) => {
     if (login) {
-      setLoginStatus({ type: 'error', message: login, showNotify: true, notifyType: 'error' });
+      setLoginMessage(login);
     }
     if (firstName) {
-      setFirstNameStatus({ type: 'error', message: firstName, showNotify: true, notifyType: 'error' });
+      setFirstNameMessage(firstName);
     }
     if (lastName) {
-      setLastNameStatus({ type: 'error', message: lastName, showNotify: true, notifyType: 'error' });
+      setLastNameMessage(lastName);
     }
     if (email) {
-      setEmailStatus({ type: 'error', message: email, showNotify: true, notifyType: 'error' });
+      setEmailMessage(email);
     }
     if (password) {
-      setPasswordStatus({ type: 'error', message: password, showNotify: true, notifyType: 'error' });
+      setPasswordMessage(password);
     }
     if (repassword) {
-      setRepasswordStatus({ type: 'error', message: repassword, showNotify: true, notifyType: 'error' });
+      setRepasswordMessage(repassword);
     }
   };
 
-  const notyfication = (showNotify, notifyType, message) => (
-    <span className={showNotify ? '' : s.hide}>
-      <Dot type={notifyType} scale={0.5} />
-      <Text small type={notifyType}>
-        {message}
-      </Text>
-    </span>
-  );
+  const notyfication = (message) => {
+    if (!message) {
+      return;
+    }
+
+    return (
+      <>
+        <Dot type="error" scale={0.5} />
+        <Text small type="error">
+          {message}
+        </Text>
+      </>
+    );
+  };
 
   return (
     <div className={s.wrapper}>
       <div className={s.container}>
-        <div className={s.logo}>
-          <Link to={'/'}>Logo</Link>
-        </div>
         <div className={s.content}>
-          <Text h2 font="22px" className={s.title}>
-            Create an account
-          </Text>
+          <h1 className={s.title}>Create an account</h1>
           <form className={s.form} onSubmit={handleSubmit}>
             <Input
+              value={login}
+              type={loginMessage ? 'error' : 'default'}
+              onChange={(e) => {
+                handleInputChange(e, setLogin, validateLogin, setLoginMessage);
+              }}
               id="login"
               name="login"
-              type={loginStatus.type}
               scale={1.1}
               placeholder="Login"
-              value={login}
-              onChange={(e) => {
-                handleInputChange(e, setLogin, validateLogin, setLoginStatus);
-              }}
               mb="15px"
               w="100%"
             >
               <label htmlFor="login" className={s.label}>
                 Login
               </label>
-              {notyfication(loginStatus.showNotify, loginStatus.notifyType, loginStatus.message)}
+              {notyfication(loginMessage)}
             </Input>
 
             <Input
+              value={firstName}
+              type={firstNameMessage ? 'error' : 'default'}
+              onChange={(e) => {
+                handleInputChange(e, setFirstName, validateName, setFirstNameMessage);
+              }}
               id="firstName"
               name="firstName"
-              type={firstNameStatus.type}
               scale={1.1}
               placeholder="First name"
-              value={firstName}
-              onChange={(e) => {
-                handleInputChange(e, setFirstName, validateName, setFirstNameStatus);
-              }}
               mb="15px"
               w="100%"
             >
               <label htmlFor="firstName" className={s.label}>
                 First name
               </label>
-              {notyfication(firstNameStatus.showNotify, firstNameStatus.notifyType, firstNameStatus.message)}
+              {notyfication(firstNameMessage)}
             </Input>
 
             <Input
+              value={lastName}
+              type={lastNameMessage ? 'error' : 'default'}
+              onChange={(e) => {
+                handleInputChange(e, setLastName, validateName, setLastNameMessage);
+              }}
               id="lastName"
               name="lastName"
-              type={lastNameStatus.type}
               scale={1.1}
               placeholder="Last name"
-              value={lastName}
-              onChange={(e) => {
-                handleInputChange(e, setLastName, validateName, setLastNameStatus);
-              }}
               mb="15px"
               w="100%"
             >
               <label htmlFor="lastName" className={s.label}>
                 Last name
               </label>
-              {notyfication(lastNameStatus.showNotify, lastNameStatus.notifyType, lastNameStatus.message)}
+              {notyfication(lastNameMessage)}
             </Input>
 
             <Input
+              value={email}
+              type={emailMessage ? 'error' : 'default'}
+              onChange={(e) => {
+                handleInputChange(e, setEmail, validateEmail, setEmailMessage);
+              }}
               id="email"
               name="email"
-              type={emailStatus.type}
               scale={1.1}
               placeholder="Email address"
-              value={email}
-              onChange={(e) => {
-                handleInputChange(e, setEmail, validateEmail, setEmailStatus);
-              }}
               mb="15px"
               w="100%"
             >
               <label htmlFor="email" className={s.label}>
                 Email address
               </label>
-              {notyfication(emailStatus.showNotify, emailStatus.notifyType, emailStatus.message)}
+              {notyfication(emailMessage)}
             </Input>
 
             <Input.Password
+              value={password}
+              type={passwordMessage ? 'error' : 'default'}
+              onChange={(e) => {
+                handleInputChange(e, setPassword, validatePassword, setPasswordMessage);
+              }}
               id="password"
               name="password"
-              type={passwordStatus.type}
               scale={1.1}
               placeholder="Password"
-              value={password}
-              onChange={(e) => {
-                handleInputChange(e, setPassword, validatePassword, setPasswordStatus);
-              }}
               mb="15px"
               w="100%"
             >
               <label htmlFor="password" className={s.label}>
                 Password
               </label>
-              {notyfication(passwordStatus.showNotify, passwordStatus.notifyType, passwordStatus.message)}
+              {notyfication(passwordMessage)}
             </Input.Password>
 
             <Input.Password
+              value={repassword}
+              type={repasswordMessage ? 'error' : 'default'}
+              onChange={(e) => {
+                handleInputChange(e, setRepassword, comparePasswords.bind(this, password), setRepasswordMessage);
+              }}
               id="repassword"
               name="repassword"
-              type={repasswordStatus.type}
               scale={1.1}
               placeholder="Repeat password"
-              value={repassword}
-              onChange={(e) => {
-                handleInputChange(e, setRepassword, comparePasswords.bind(this, password), setRepasswordStatus);
-              }}
               w="100%"
             >
               <label htmlFor="repassword" className={s.label}>
                 Repeat password
               </label>
-              {notyfication(repasswordStatus.showNotify, repasswordStatus.notifyType, repasswordStatus.message)}
+              {notyfication(repasswordMessage)}
             </Input.Password>
 
-            <Button loading={loading} type="secondary-light" htmlType="submit" mt="30px" w="100%">
+            <Button loading={isRegisterLoading || isLoginLoading} type="secondary-light" htmlType="submit" mt="30px" w="100%">
               Sign up
             </Button>
           </form>

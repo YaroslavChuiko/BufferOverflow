@@ -1,13 +1,10 @@
 .wrapper {
   width: 100%;
-  min-height: 100vh;
+  margin-top: 64px;
+  min-height: calc(100vh - 64px);
   display: flex;
   align-items: center;
   justify-content: center;
-  // background-image: radial-gradient(#e3e3e3 1px, transparent 0), radial-gradient(#e3e3e3 1px, transparent 0);
-  // background-position: 0 0, calc(1 * 25px) calc(1 * 25px);
-  // background-attachment: fixed;
-  // background-size: calc(1 * 50px) calc(1 * 50px);
 }
 
 .container {
@@ -40,6 +37,8 @@
 }
 
 .title {
+  font-size: 22px;
+  text-align: center;
   width: 100%;
   margin: 0 0 40px 0;
 }
