@@ -62,6 +62,7 @@ const ResetPassword = ({ visible, onClose }) => {
                 scale={1.2}
                 label="Email"
                 placeholder="Email"
+                htmlType="email"
               />
               {emailMessage && (
                 <div className={s.validationMessage}>
