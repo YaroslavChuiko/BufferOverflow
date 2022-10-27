@@ -40,7 +40,7 @@ export const validatePassword = (password) => {
 }
 
 export const comparePasswords = (password, repassword) => {
-  if (password !== repassword) return 'Passwords do not match';
+  if (password !== repassword || !repassword.length) return 'Passwords do not match';
 
   return '';
 }
