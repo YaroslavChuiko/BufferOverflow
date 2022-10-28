@@ -2,8 +2,8 @@ const path = require('path');
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const { WebpackManifestPlugin } = require('webpack-manifest-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
 const Dotenv = require('dotenv-webpack');
 
 let mode = 'development';
@@ -16,17 +16,12 @@ const plugins = [
   new MiniCssExtractPlugin({ filename: './static/css/main.css' }),
   new HtmlWebpackPlugin({
     template: './public/index.html',
-    // favicon: './src/favicon/favicon.ico',
-    // inject: 'body',
+    favicon: './public/favicon.ico',
   }),
-  new CopyWebpackPlugin({
-    patterns: [
-      {
-        from: path.resolve(__dirname, 'public/favicon'),
-        to: path.resolve(__dirname, 'dist/favicon'),
-      },
-    ],
-  }),
+  new WebpackManifestPlugin({
+    basePath: './public',
+    fileName: 'manifest.json'
+})
 ];
 
 if (process.env.NODE_ENV === 'production') {
