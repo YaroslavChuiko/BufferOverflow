@@ -1,4 +1,4 @@
-import { Button, Text, Textarea } from '@geist-ui/core';
+import { Button, Text, Textarea, useToasts } from '@geist-ui/core';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useCreateCommentMutation } from '../../../store/api/commentSlice';
@@ -6,7 +6,8 @@ import { selectUser } from '../../../store/selectors';
 import { validateLength } from '../../../validation/richTextValidation';
 import s from './CommentCreate.module.scss';
 
-const CommentCreate = ({ answerId, initialValue = '', mode ='create' }) => {
+const CommentCreate = ({ answerId, initialValue = ''}) => {
+  const { setToast } = useToasts();
   const { loggedIn, userData } = useSelector(selectUser);
   const [editorValue, setEditorValue] = useState(initialValue);
   const [notify, setNotify] = useState({ type: 'default', message: '' });
