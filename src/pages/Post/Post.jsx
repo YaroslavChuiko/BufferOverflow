@@ -17,7 +17,6 @@ const Post = () => {
   const { postId } = useParams();
   const { setToast } = useToasts();
   const navigate = useNavigate();
-  // const postId = 1;
   const { loggedIn, userData } = useSelector(selectUser);
 
   const {
@@ -114,16 +113,14 @@ const Post = () => {
                 </Tag>
               )}
             </div>
-            <div className={s.postActions}>{actions}</div>
+            {/* <div className={s.postActions}>{actions}</div> */}
+            {actions}
           </div>
           <Divider />
         </div>
 
         <div className={s.container}>
           <div className={s.content} dangerouslySetInnerHTML={{ __html: post.content }}>
-            {/* <p>
-              {capitalizeFirstLetter(post.content)} {capitalizeFirstLetter(post.content)}
-            </p> */}
           </div>
 
           <div className={s.footer}>
