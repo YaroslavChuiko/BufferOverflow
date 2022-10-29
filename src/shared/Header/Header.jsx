@@ -1,4 +1,5 @@
-import { Avatar, Button } from '@geist-ui/core';
+import { Avatar, Button, useClasses } from '@geist-ui/core';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import logo128 from '../../assets/logo/logo128.png';
@@ -10,30 +11,88 @@ import s from './Header.module.scss';
 
 const Header = () => {
   const navigate = useNavigate();
-  const { loggedIn, userData } = useSelector(selectUser);
   const dispatch = useDispatch();
+  const { loggedIn, userData } = useSelector(selectUser);
+
+  const [isMobile, setIsMobile] = useState(false);
+  const [isMobileMenuActive, setIsMobileMenuActive] = useState(false);
+
+  const handleMobileMenuToggleClick = (e) => {
+    e.preventDefault();
+    setIsMobileMenuActive((prevVal) => !prevVal);
+  };
+
+  const handleResize = () => {
+    if (window.innerWidth <= 767) {
+      setIsMobile(true);
+    } else {
+      setIsMobile(false);
+    }
+  };
+
+  useEffect(() => {
+    handleResize();
+    window.addEventListener('resize', handleResize);
+  }, []);
+
+  const navToggleClassName = useClasses(s.navToggle, isMobileMenuActive ? s.active : null);
+  const handleIsNavLinkActive = ({ isActive }) => (isActive ? `${s.navLink} ${s.active}` : s.navLink);
+
+  const logoutBtn = (
+    <Button
+      scale={0.8}
+      auto
+      type="secondary"
+      onClick={() => {
+        dispatch(logOut());
+      }}
+      mt={isMobile ? '20px' : '0'}
+    >
+      Log out
+    </Button>
+  );
+
+  const nav = (
+    <nav className={s.nav} onClick={handleMobileMenuToggleClick}>
+      <NavLink to="/" className={handleIsNavLinkActive} end>
+        Questions
+      </NavLink>
+      <NavLink to="/profile" className={handleIsNavLinkActive}>
+        Profile
+      </NavLink>
+      <NavLink to="/post/create" className={handleIsNavLinkActive}>
+        Ask question
+      </NavLink>
+      {loggedIn && isMobile && logoutBtn}
+    </nav>
+  );
 
   return (
     <header className={s.header}>
       <Container forMainContent={false}>
         <div className={s.content}>
-          <Link className={s.logo} to={'/'}>
-            <img className={s.logoImg} src={logo128} alt="logo" />
-            <span className={s.logoText}>
-              <span>Buffer</span>Overflow
-            </span>
-          </Link>
-          <nav className={s.nav}>
-            <NavLink to="/" className={handleIsNavLinkActive} end>
-              Questions
-            </NavLink>
-            <NavLink to="/profile" className={handleIsNavLinkActive}>
-              Profile
-            </NavLink>
-            <NavLink to="/post/create" className={handleIsNavLinkActive}>
-              Ask question
-            </NavLink>
-          </nav>
+          <div className={s.contentLeft}>
+            {isMobile && (
+              <>
+                <button className={navToggleClassName} onClick={handleMobileMenuToggleClick} type="button">
+                  <span className={s.navToggleItem}>Menu</span>
+                </button>
+
+                {isMobileMenuActive && nav}
+              </>
+            )}
+
+            <Link className={s.logo} to={'/'}>
+              <img className={s.logoImg} src={logo128} alt="logo" />
+              {!isMobile && (
+                <span className={s.logoText}>
+                  <span>Buffer</span>Overflow
+                </span>
+              )}
+            </Link>
+          </div>
+
+          {!isMobile && nav}
 
           {loggedIn ? (
             <div className={s.controls}>
@@ -46,16 +105,7 @@ const Header = () => {
                   <span className={s.userRole}>{userData.role}</span>
                 </div>
               </div>
-              <Button
-                scale={0.8}
-                auto
-                type="secondary"
-                onClick={() => {
-                  dispatch(logOut());
-                }}
-              >
-                Log out
-              </Button>
+              {!isMobile && logoutBtn}
             </div>
           ) : (
             <Button
