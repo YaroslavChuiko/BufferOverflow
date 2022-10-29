@@ -2,7 +2,12 @@ import { Tooltip, useClasses } from '@geist-ui/core';
 import { ChevronDown, ChevronUp } from '@geist-ui/icons';
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { useAddLikeMutation, useDeleteLikeMutation, useLazyCheckLikeQuery, useUpdateLikeMutation } from '../../store/api/likeSlice';
+import {
+  useAddLikeMutation,
+  useDeleteLikeMutation,
+  useLazyCheckLikeQuery,
+  useUpdateLikeMutation,
+} from '../../store/api/likeSlice';
 import { selectUser } from '../../store/selectors';
 import s from './Vote.module.scss';
 
@@ -69,28 +74,28 @@ const Vote = ({ postId = null, answerId = null, voteCount }) => {
       target_answer: answerId,
       type: 'dislike',
     };
+    
+      switch (like?.type) {
+        case 'dislike':
+          await deleteLike(likeInfo).unwrap();
+          checkLike({ target, id });
+          break;
 
-    switch (like?.type) {
-      case 'dislike':
-        await deleteLike(likeInfo).unwrap();
-        checkLike({ target, id });
-        break;
+        case 'like':
+          await updateLike(likeInfo).unwrap();
+          checkLike({ target, id });
+          break;
 
-      case 'like':
-        await updateLike(likeInfo).unwrap();
-        checkLike({ target, id });
-        break;
-
-      default:
-        await addLike(likeInfo).unwrap();
-        checkLike({ target, id });
-        break;
-    }
+        default:
+          await addLike(likeInfo).unwrap();
+          checkLike({ target, id });
+          break;
+      }
   };
 
   const countClassName = useClasses(s.voteCount, voteCount >= 0 ? s.positive : s.negative);
-  const negativeVoteClassName = useClasses(s.voteButton, like?.type === 'dislike' ? s.negative : '');
-  const positiveVoteClassName = useClasses(s.voteButton, like?.type === 'like' ? s.positive : '');
+  const negativeVoteClassName = useClasses(s.voteButton, like?.type === 'dislike' && loggedIn ? s.negative : '');
+  const positiveVoteClassName = useClasses(s.voteButton, like?.type === 'like' && loggedIn ? s.positive : '');
 
   const negativeVoteButton = (
     <button className={negativeVoteClassName} onClick={handleNegativeVote}>

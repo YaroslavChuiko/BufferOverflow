@@ -1,20 +1,19 @@
-import { AutoComplete, Button, Divider, Tabs, Text, useToasts } from '@geist-ui/core';
+import { AutoComplete, Button, Tabs, useToasts } from '@geist-ui/core';
 import { Settings, UserX } from '@geist-ui/icons';
 import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import Container from '../../shared/Container/Container';
 import PostList from '../../shared/PostList/PostList';
 import { useDeleteUserMutation, useLazyGetCategoriesQuery } from '../../store/api/apiSlice';
+import { useLogoutMutation } from '../../store/api/authSlice';
 import { selectUser } from '../../store/selectors';
-import { logOut } from '../../store/thunks/userThunk';
 
 import s from './Profile.module.scss';
 
 const Profile = () => {
   const { userData } = useSelector(selectUser);
   const { setToast } = useToasts();
-  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const tabs = ['popular', 'unpopular', 'newest', 'oldest'];
@@ -42,6 +41,7 @@ const Profile = () => {
   };
 
   const [deleteUser, { isLoading: isLoading, isSuccess: isSuccess }] = useDeleteUserMutation();
+  const [logout] = useLogoutMutation();
 
   const [tab, setTab] = useState(JSON.parse(sessionStorage.getItem('ownQuestionsActiveTab')) || tabs[0]);
   const handleTabChange = (val) => {
@@ -66,14 +66,14 @@ const Profile = () => {
   const handleEditClick = (e) => {
     e.preventDefault();
     navigate('edit');
-  }
+  };
 
   const handleDeleteClick = async (e) => {
     e.preventDefault();
 
     try {
       await deleteUser(userData.id);
-      dispatch(logOut());
+      await logout();
       navigate('/');
     } catch (error) {
       setToast({

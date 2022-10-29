@@ -1,7 +1,7 @@
 import { Button, Dot, Input, Text, useToasts } from '@geist-ui/core';
 import { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { useConfirmResetPasswordMutation } from '../../store/api/apiSlice';
+import { useConfirmResetPasswordMutation } from '../../store/api/authSlice';
 import { comparePasswords, validatePassword } from '../../validation/userValidation';
 import s from './ResetPassword.module.scss';
 

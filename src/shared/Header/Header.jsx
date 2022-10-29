@@ -1,21 +1,27 @@
 import { Avatar, Button, useClasses } from '@geist-ui/core';
 import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import logo128 from '../../assets/logo/logo128.png';
+import { useLogoutMutation } from '../../store/api/authSlice';
 import { selectUser } from '../../store/selectors';
-import { logOut } from '../../store/thunks/userThunk';
 import Container from '../Container/Container';
 
 import s from './Header.module.scss';
 
 const Header = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   const { loggedIn, userData } = useSelector(selectUser);
 
   const [isMobile, setIsMobile] = useState(false);
   const [isMobileMenuActive, setIsMobileMenuActive] = useState(false);
+
+  const [logout, { isLoading }] = useLogoutMutation();
+
+  const handleLogoutClick = async (e) => {
+    e.preventDefault();
+    await logout();
+  };
 
   const handleMobileMenuToggleClick = (e) => {
     e.preventDefault();
@@ -39,15 +45,7 @@ const Header = () => {
   const handleIsNavLinkActive = ({ isActive }) => (isActive ? `${s.navLink} ${s.active}` : s.navLink);
 
   const logoutBtn = (
-    <Button
-      scale={0.8}
-      auto
-      type="secondary"
-      onClick={() => {
-        dispatch(logOut());
-      }}
-      mt={isMobile ? '20px' : '0'}
-    >
+    <Button scale={0.8} auto type="secondary" loading={isLoading} onClick={handleLogoutClick} mt={isMobile ? '20px' : '0'}>
       Log out
     </Button>
   );

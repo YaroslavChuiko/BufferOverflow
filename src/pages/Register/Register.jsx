@@ -2,7 +2,7 @@ import { Button, Dot, Input, Text, useToasts } from '@geist-ui/core';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
-import { useLoginMutation, useRegisterMutation } from '../../store/api/apiSlice';
+import { useLoginMutation, useRegisterMutation } from '../../store/api/authSlice';
 import { userSlice } from '../../store/slices/userSlice';
 import { comparePasswords, validateEmail, validateLogin, validateName, validatePassword } from '../../validation/userValidation';
 import s from './Register.module.scss';

@@ -1,6 +1,6 @@
 import { Input, Modal, Text, useToasts } from '@geist-ui/core';
 import { useState } from 'react';
-import { useResetPasswordMutation } from '../../../store/api/apiSlice';
+import { useResetPasswordMutation } from '../../../store/api/authSlice';
 import { validateEmail } from '../../../validation/userValidation';
 
 import s from './ResetPassword.module.scss';

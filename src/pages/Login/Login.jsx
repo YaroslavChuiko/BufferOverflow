@@ -3,7 +3,7 @@ import { Lock, User } from '@geist-ui/icons';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
-import { useLoginMutation } from '../../store/api/apiSlice';
+import { useLoginMutation } from '../../store/api/authSlice';
 import { userSlice } from '../../store/slices/userSlice';
 import ResetPassword from './components/ResetPassword';
 import s from './Login.module.scss';
