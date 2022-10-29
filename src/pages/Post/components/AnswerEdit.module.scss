@@ -1,6 +1,12 @@
+@use '../../../styles/media' as *;
+
 .container {
   padding: 20px 0;
   margin-left: 45px;
+
+  @include for-phone-only {
+    margin: 0;
+  }
 }
 
 .form {
