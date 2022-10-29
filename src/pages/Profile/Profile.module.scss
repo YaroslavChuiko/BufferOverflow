@@ -1,15 +1,30 @@
 @use '../../styles/variables' as *;
+@use '../../styles/media' as *;
 
 .profile {
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin-bottom: 50px;
+
+  @include for-tablet-portrait {
+    flex-direction: column;
+    margin-bottom: 20px;
+
+    & > :not(:last-child) {
+      margin-bottom: 30px;
+    }
+  }
 }
 
 .user {
   display: flex;
   align-items: flex-start;
+
+  @include for-phone-only {
+    flex-direction: column;
+    align-items: center;
+  }
 }
 
 .avatar {
@@ -18,6 +33,8 @@
   overflow: hidden;
   border-radius: 6px;
   border: 1px solid $accent-2;
+
+  
   
   & .avatarImg {
     display: inline-block;
@@ -70,10 +87,18 @@
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
+
+  @include for-tablet-portrait {
+    flex-direction: column-reverse;
+  }
 }
 
 .questioinsContent {
   width: 70%;
+
+  @include for-tablet-portrait {
+    width: 100%;
+  }
 }
 
 .questionsFilter {
@@ -88,4 +113,11 @@
   border: 1px solid $accent-2;
   box-shadow: none;
   transition: all 0.2s ease;
+
+  @include for-tablet-portrait {
+    position: static;
+    width: 100%;
+    margin-top: 20px;
+    margin-bottom: 10px;
+  }
 }
