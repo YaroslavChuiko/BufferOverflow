@@ -80,7 +80,7 @@ const Answer = ({ answer }) => {
 
       <div className={s.content} dangerouslySetInnerHTML={{ __html: answer.content }}></div>
 
-      <div className={s.footer}>{actions}</div>
+      {actions}
 
       {isEdit ? <AnswerEdit answer={answer} setIsEdit={setIsEdit} /> : <CommentList answerId={answer.id} />}
     </div>
