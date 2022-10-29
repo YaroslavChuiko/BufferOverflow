@@ -71,10 +71,10 @@ const ChangeAvatar = () => {
           </div>
 
           <div className={s.actions}>
-            <Button loading={isLoading} htmlType="submit" type="success-light" mr="15px">
+            <Button loading={isLoading} htmlType="submit" type="success-light" mr="15px" mb="10px">
               Save
             </Button>
-            <Button type="error-light" ghost onClick={handleCancelClick}>
+            <Button type="error-light" ghost onClick={handleCancelClick} mb="10px">
               Cancel
             </Button>
           </div>
