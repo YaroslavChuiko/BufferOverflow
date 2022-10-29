@@ -4,13 +4,13 @@ import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import App from './App';
+import { apiSlice } from './store/api/apiSlice';
 import { store } from './store/store';
-import { isLoggedIn } from './store/thunks/userThunk';
 
 const container = document.getElementById('app');
 const root = createRoot(container);
 
-store.dispatch(isLoggedIn());
+store.dispatch(apiSlice.endpoints.isLoggedIn.initiate());
 
 root.render(
   <React.StrictMode>
