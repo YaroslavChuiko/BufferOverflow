@@ -1,15 +1,12 @@
-import { AutoComplete, Select, Tabs, Text } from '@geist-ui/core';
-import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { useSearchParams } from 'react-router-dom';
+import { AutoComplete, Tabs, Text } from '@geist-ui/core';
+import { useState } from 'react';
 import Container from '../../shared/Container/Container';
 import PostList from '../../shared/PostList/PostList';
-import { useGetCategoriesQuery, useLazyGetCategoriesQuery } from '../../store/api/apiSlice';
-import { selectUser } from '../../store/selectors';
+import { useLazyGetCategoriesQuery } from '../../store/api/apiSlice';
 
-import s from './Home.module.scss';
+import s from './Questions.module.scss';
 
-const Home = () => {
+const Questions = () => {
   const tabs = ['popular', 'unpopular', 'newest', 'oldest'];
   const tabQuery = {
     'popular': {
@@ -35,13 +32,11 @@ const Home = () => {
   };
 
   const [tab, setTab] = useState(JSON.parse(sessionStorage.getItem('questionsActiveTab')) || tabs[0]);
-  const { pageSize } = useSelector(selectUser);
 
   const handleTabChange = (val) => {
     sessionStorage.setItem('questionsActiveTab', JSON.stringify(val));
     setTab(val);
   };
-
 
   //filter //! add many tags
   const [filter, setFilter] = useState('');
@@ -59,7 +54,7 @@ const Home = () => {
 
   return (
     <Container>
-      <div className={s.home}>
+      <div className={s.container}>
         <div>
           <Text h1 font="36px">
             Questions
@@ -94,4 +89,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default Questions;

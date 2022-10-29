@@ -1,6 +1,7 @@
 @use '../../styles/variables' as *;
+@use '../../styles/media' as *;
 
-.home {
+.container {
   background-color: $background-color;
 }
 
@@ -8,10 +9,18 @@
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
+
+  @include for-tablet-portrait {
+    flex-direction: column-reverse;
+  }
 }
 
 .questioinsContent {
   width: 70%;
+
+  @include for-tablet-portrait {
+    width: 100%;
+  }
 }
 
 .questionsFilter {
@@ -26,4 +35,11 @@
   border: 1px solid $accent-2;
   box-shadow: none;
   transition: all 0.2s ease;
+
+  @include for-tablet-portrait {
+    position: static;
+    width: 100%;
+    margin-top: 20px;
+    margin-bottom: 10px;
+  }
 }
