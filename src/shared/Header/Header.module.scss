@@ -1,4 +1,5 @@
 @use '../../styles/variables' as *;
+@use '../../styles/media' as *;
 
 .header {
   width: 100%;
@@ -40,31 +41,53 @@
   height: 100%;
 }
 
+.contentLeft {
+  display: flex;
+  align-items: center;
+}
+
 .nav {
   margin: 0;
   padding: 0;
   display: flex;
   align-items: center;
+
+  @include for-tablet-portrait {
+    flex-direction: column;
+    position: absolute;
+    top: 64px;
+    left: 0;
+    padding: 20px 40px;
+    border-radius: 6px;
+    background-color: $background-color;
+    box-shadow: 0 8px 30px rgb(0 0 0 / 12%);
+  }
 }
 
 .navLink {
-  margin: 0, 4px;
+  margin: 0 4px;
   padding: 9px 14px;
   border-radius: 5px;
   font-size: 14px;
   background-color: transparent;
-  color: #666;
+  color: $accent-5;
   text-decoration: none;
 
   transition: color, backgtound-color, 200ms ease-in;
 
   &:hover {
-    color: #000;
-    background-color: rgba(#aeaeae, 0.2);
+    color: $foreground-color;
+    background-color: rgba($accent-2, 0.5);
   }
 
   &.active {
-    color: #000;
+    color: $foreground-color;
+  }
+
+  @include for-tablet-portrait {
+    width: 100%;
+    text-align: center;
+    margin: 0 0 5px 0;
   }
 }
 
@@ -77,6 +100,14 @@
   display: flex;
   align-items: center;
   margin-right: 60px;
+
+  @include for-tablet-landscape {
+    margin-right: 30px;
+  }
+
+  @include for-tablet-portrait {
+    margin-right: 0;
+  }
 }
 
 .userInfo {
@@ -88,16 +119,86 @@
 .userName {
   font-size: 16px;
   font-weight: 500;
-  color: #111;
-  // line-height: 1;
+  color: $accent-8;
 }
 
 .userRole {
   font-size: 13px;
-  color: #444;
+  color: $accent-6;
 }
 
-.fixed {
-  position: fixed !important;
+.navToggle {
   display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 40px;
+  height: 40px;
+  padding: 0;
+  margin-right: 30px;
+
+  border: 0;
+  border-radius: 6px;
+  background-color: transparent;
+
+  cursor: pointer;
+  z-index: 10000;
+
+  transition: all 0.2s ease-in;
+
+  &:focus {
+    outline: 0;
+  }
+
+  &:hover {
+    background-color: $accent-2;
+  }
+
+  &.active .navToggleItem {
+    background: transparent;
+    transition: background-color 0.1s linear;
+  }
+
+  &.active .navToggleItem::before {
+    transform: rotate(45deg);
+  }
+
+  &.active .navToggleItem::after {
+    transform: rotate(-45deg);
+  }
+}
+
+.navToggleItem {
+  width: 25px;
+  height: 2px;
+  border-radius: 6px;
+
+  display: block;
+
+  background-color: $accent-5;
+  font-size: 0;
+  color: transparent;
+
+  position: relative;
+  transition: background-color 0.2s linear;
+
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    z-index: 1;
+    height: 2px;
+    border-radius: 6px;
+    width: 100%;
+    background-color: $accent-5;
+    transition: transform 0.2s linear, background-color 0.2s linear;
+  }
+
+  &::before {
+    transform: translateY(7px);
+  }
+
+  &::after {
+    transform: translateY(-7px);
+  }
 }
