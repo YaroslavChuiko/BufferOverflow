@@ -29,7 +29,7 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
           dispatch(userSlice.actions.unsetUser());
         } catch {}
       },
-      invalidatesTags: ['Post', 'Answer', 'Comment', 'Like'],
+      invalidatesTags: ['Post', 'Answer', 'Comment'],
     }),
     isLoggedIn: builder.query({
       query: () => ({ url: `/auth/isLoggedIn` }),
@@ -39,7 +39,6 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
           dispatch(userSlice.actions.checkIsLoggedIn(response));
         } catch {}
       },
-      invalidatesTags: ['Post', 'Answer', 'Comment', 'Like'],
     }),
     resetPassword: builder.mutation({
       query: ({ email }) => ({
