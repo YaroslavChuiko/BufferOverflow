@@ -14,7 +14,7 @@
 </div>
 
 <div align="center">
-  <h3>Simple event calendar, that helps organize meetings, tasks for the day/month/year.</h3>
+  <h3>BufferOverflow is a simple QA platform like StackOverflow, built with React. As a back-end uses my own API.</h3>
 </div>
 
 <br/>
